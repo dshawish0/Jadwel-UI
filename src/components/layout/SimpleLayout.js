@@ -7,7 +7,7 @@ import MobileNav from 'components/template/MobileNav'
 import HorizontalNav from 'components/template/HorizontalNav'
 import View from 'views'
 import { Link } from 'react-router-dom';
-
+import Notification from 'components/template/Notification'
 import { useSelector } from 'react-redux'
 const HeaderActionsStart = () => {
     return (
@@ -27,7 +27,8 @@ const HeaderActionsStart = () => {
 const HeaderActionsEnd = () => {
     return (
         <>
-           
+                       <Notification/>
+
             <UserDropdown hoverable={false} />
         </>
     )
