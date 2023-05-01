@@ -21,7 +21,7 @@ const Step1 = ({ onNext, onSkip }) => {
                 <Button className="mb-2" variant="solid" onClick={onNext} block>
                     Get started
                 </Button>
-               
+             
             </div>
         </div>
     )

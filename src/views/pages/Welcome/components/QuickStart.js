@@ -4,7 +4,6 @@ import useThemeClass from 'utils/hooks/useThemeClass'
 import { APP_NAME } from 'constants/app.constant'
 import { useNavigate } from 'react-router-dom'
 import { HiOutlineLockClosed } from 'react-icons/hi'
-import SingleMenuView from 'views/demo/Notifications'
 const quickStartList = [
     {
         label: 'Watch quick demoenstration video that describes Jadwel!',

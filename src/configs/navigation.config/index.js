@@ -17,10 +17,10 @@ const navigationConfig = [
     },
     /** Example purpose only, please remove */
     {
-        key: 'Notifications',
-        path: '/single-menu-view',
-        title: 'Notifications',
-        translateKey: 'nav.Notifications',
+        key: 'Suggest Course',
+        path: '/SuggestedCourse',
+        title: 'Suggest Course',
+        translateKey: 'nav.SuggestedCourse',
         icon: 'singleMenu',
         type: NAV_ITEM_TYPE_ITEM,
         authority: [],
@@ -33,12 +33,12 @@ const navigationConfig = [
         translateKey: 'nav.Sceduales.Sceduales',
         icon: 'collapseMenu',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        authority: [],
+        authority: ['student'],
         subMenu: [
             {
                 key: 'Create',
                 path: '/collapse-menu-item-view-1',
-                title: 'Create New Sceduale',
+                title: 'Create Suggested Sceduale',
                 translateKey: 'nav.Create',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
@@ -48,7 +48,7 @@ const navigationConfig = [
             {
                 key: 'View',
                 path: '/collapse-menu-item-view-2',
-                title: 'View Created Sceduales',
+                title: 'View Suggested Sceduales',
                 translateKey: 'nav.View',
                 icon: '',
                 type: NAV_ITEM_TYPE_ITEM,
@@ -60,11 +60,11 @@ const navigationConfig = [
     {
         key: 'groupMenu',
         path: '',
-        title: 'Group Menu',
-        translateKey: 'nav.groupMenu.groupMenu',
+        title: 'Admin Menu',
+        //  translateKey: 'nav.groupMenu.groupMenu',
         icon: '',
-        type: NAV_ITEM_TYPE_TITLE,
-        authority: [],
+        type: NAV_ITEM_TYPE_COLLAPSE,
+        authority: ['chairman'],
         subMenu: [
             {
                 key: 'groupMenu.single',
@@ -73,7 +73,7 @@ const navigationConfig = [
                 translateKey: 'nav.groupMenu.single',
                 icon: 'groupSingleMenu',
                 type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
+                authority: ['chairman'],
                 subMenu: [],
             },
             {
@@ -83,7 +83,7 @@ const navigationConfig = [
                 translateKey: 'nav.groupMenu.collapse.collapse',
                 icon: 'groupCollapseMenu',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [],
+                authority: ['chairman'],
                 subMenu: [
                     {
                         key: 'groupMenu.collapse.item1',

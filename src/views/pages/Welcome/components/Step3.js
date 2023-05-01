@@ -23,7 +23,7 @@ const roles = [
     },
     {
         value: '2',
-        label: 'Enhance communcation with chairmans',
+        label: 'Enhance communcation with chairman',
         icon: <HiOutlineAdjustments />,
     },
     { value: '3', label: 'Others', icon: <HiOutlineSparkles /> },

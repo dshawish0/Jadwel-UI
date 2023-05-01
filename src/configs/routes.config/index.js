@@ -12,10 +12,10 @@ export const protectedRoutes = [
     },
     /** Example purpose only, please remove */
     {
-        key: 'singleMenuItem',
-        path: '/single-menu-view',
-        component: React.lazy(() => import('views/demo/Notifications')),
-        authority: [],
+        key: 'suggestedCourse',
+        path: '/SuggestedCourse',
+        component: React.lazy(() => import('views/demo/SuggestedCourse')),
+        authority: ['student'],
     },
     {
         key: 'collapseMenu.item1',
