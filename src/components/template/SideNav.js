@@ -1,5 +1,6 @@
 import React from 'react'
 import classNames from 'classnames'
+
 import { ScrollBar } from 'components/ui'
 import PropTypes from 'prop-types'
 import {
@@ -88,16 +89,12 @@ const SideNav = () => {
                         !sideNavCollapse && 'side-nav-expand'
                     )}
                 >
-                    <div className="side-nav-header">
-                        <Logo
-                            mode={logoMode()}
-                            type={sideNavCollapse ? 'streamline' : 'full'}
-                            gutter={
-                                sideNavCollapse
-                                    ? SIDE_NAV_CONTENT_GUTTER
-                                    : LOGO_X_GUTTER
-                            }
-                        />
+                  
+                    
+                    <div className="side-nav-header" >
+                   
+                      <h2>Jadwel</h2>
+                         
                     </div>
                     {sideNavCollapse ? (
                         menuContent

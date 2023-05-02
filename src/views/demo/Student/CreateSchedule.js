@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function CollapseMenuItemView1() {
+function CreateSchedule() {
   const [students, setStudents] = useState([]);
   const [name, setName] = useState('');
   const [time, setTime] = useState('');
@@ -105,4 +105,4 @@ function CollapseMenuItemView1() {
 );
 }
 
-export default CollapseMenuItemView1;
+export default CreateSchedule;

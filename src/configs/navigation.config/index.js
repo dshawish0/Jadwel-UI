@@ -15,17 +15,9 @@ const navigationConfig = [
         authority: [],
         subMenu: [],
     },
+   
     /** Example purpose only, please remove */
-    {
-        key: 'Suggest Course',
-        path: '/SuggestedCourse',
-        title: 'Suggest Course',
-        translateKey: 'nav.SuggestedCourse',
-        icon: 'singleMenu',
-        type: NAV_ITEM_TYPE_ITEM,
-        authority: [],
-        subMenu: [],
-    },
+    
     {
         key: 'Sceduales',
         path: '',
@@ -37,7 +29,7 @@ const navigationConfig = [
         subMenu: [
             {
                 key: 'Create',
-                path: '/collapse-menu-item-view-1',
+                path: '/CreateSchedule',
                 title: 'Create Suggested Sceduale',
                 translateKey: 'nav.Create',
                 icon: '',
@@ -47,7 +39,7 @@ const navigationConfig = [
             },
             {
                 key: 'View',
-                path: '/collapse-menu-item-view-2',
+                path: '/ViewSchedule',
                 title: 'View Suggested Sceduales',
                 translateKey: 'nav.View',
                 icon: '',
@@ -58,19 +50,29 @@ const navigationConfig = [
         ],
     },
     {
+        key: 'Suggest Course',
+        path: '/SuggestedCourse',
+        title: 'Suggest Course',
+        translateKey: 'nav.SuggestedCourse',
+        icon: 'singleMenu',
+        type: NAV_ITEM_TYPE_ITEM,
+        authority: ['student'],
+        subMenu: [],
+    },
+    {
         key: 'groupMenu',
         path: '',
-        title: 'Admin Menu',
+        title: 'Chairman Menu',
         //  translateKey: 'nav.groupMenu.groupMenu',
         icon: '',
         type: NAV_ITEM_TYPE_COLLAPSE,
         authority: ['chairman'],
         subMenu: [
             {
-                key: 'groupMenu.single',
-                path: '/group-single-menu-item-view',
-                title: 'Group single menu item',
-                translateKey: 'nav.groupMenu.single',
+                key: 'CompareSchedule',
+                path: '/CompareSchedule',
+                title: 'Compare Schedule',
+                //translateKey: 'nav.groupMenu.single',
                 icon: 'groupSingleMenu',
                 type: NAV_ITEM_TYPE_ITEM,
                 authority: ['chairman'],

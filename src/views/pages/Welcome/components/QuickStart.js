@@ -10,7 +10,7 @@ const quickStartList = [
         btnText: 'Watch',
         id: '0',
         disabled: false,
-        navigate:  "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
+        navigate:  "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
 
     },
     {
@@ -19,6 +19,7 @@ const quickStartList = [
         btnText: 'Create Sceduale',
         id: '1',
         disabled: false,
+        navigate: '/src/views/demo/Student/CreateSchedule'
 
     },
     {

@@ -8,40 +8,46 @@ export const protectedRoutes = [
         key: 'home',
         path: '/home',
         component: React.lazy(() => import('views/Home')),
-        authority: [],
+        authority: ['student'],
+    },
+    {
+        key: 'home',
+        path: '/home',
+        component: React.lazy(() => import('views/chairmanhome')),
+        authority: ['chairman'],
     },
     /** Example purpose only, please remove */
     {
         key: 'suggestedCourse',
         path: '/SuggestedCourse',
-        component: React.lazy(() => import('views/demo/SuggestedCourse')),
+        component: React.lazy(() => import('views/demo/Student/SuggestedCourse')),
         authority: ['student'],
     },
     {
-        key: 'collapseMenu.item1',
-        path: '/collapse-menu-item-view-1',
-        component: React.lazy(() => import('views/demo/CollapseMenuItemView1')),
+        key: 'CreateSchedule',
+        path: '/CreateSchedule',
+        component: React.lazy(() => import('views/demo/Student/CreateSchedule')),
         authority: [],
     },
     {
-        key: 'collapseMenu.item2',
-        path: '/collapse-menu-item-view-2',
-        component: React.lazy(() => import('views/demo/CollapseMenuItemView2')),
+        key: 'ViewSchedule',
+        path: '/ViewSchedule',
+        component: React.lazy(() => import('views/demo/Student/ViewSchedule')),
         authority: [],
     },
     {
-        key: 'groupMenu.single',
-        path: '/group-single-menu-item-view',
+        key: 'UpoadRefrenceSchedule',
+        path: '/UpoadRefrenceSchedule',
         component: React.lazy(() =>
-            import('views/demo/GroupSingleMenuItemView')
+            import('views/demo/Chairman/UpoadRefrenceSchedule')
         ),
         authority: [],
     },
     {
-        key: 'groupMenu.collapse.item1',
-        path: '/group-collapse-menu-item-view-1',
+        key: 'CompareSchedule',
+        path: '/CompareSchedule',
         component: React.lazy(() =>
-            import('views/demo/GroupCollapseMenuItemView1')
+            import('views/demo/Chairman/CompareSchedule')
         ),
         authority: [],
     },
@@ -49,7 +55,7 @@ export const protectedRoutes = [
         key: 'groupMenu.collapse.item2',
         path: '/group-collapse-menu-item-view-2',
         component: React.lazy(() =>
-            import('views/demo/GroupCollapseMenuItemView2')
+            import('views/demo/Chairman/UploadOfferCourses')
         ),
         authority: [],
     },

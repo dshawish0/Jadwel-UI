@@ -18,7 +18,7 @@ export const themeConfig = {
   "controlSize": "md",
   "navMode": "transparent",
   "layout": {
-    "type": THEME_ENUM.LAYOUT_TYPE_MODERN,
+    "type": 'modern',
     "sideNavCollapse": false
   }
 }

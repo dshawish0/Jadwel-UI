@@ -6,10 +6,12 @@ import SideNavToggle from 'components/template/SideNavToggle'
 import MobileNav from 'components/template/MobileNav'
 import SideNav from 'components/template/SideNav'
 import View from 'views'
-
+import HeaderLogo from 'components/template/HeaderLogo'
+import { Link } from 'react-router-dom'
 const HeaderActionsStart = () => {
     return (
         <>
+      
             <MobileNav />
             <SideNavToggle />
         </>
@@ -19,7 +21,8 @@ const HeaderActionsStart = () => {
 const HeaderActionsEnd = () => {
     return (
         <>
-            <SidePanel />
+        
+          
             <UserDropdown hoverable={false} />
         </>
     )

@@ -6,7 +6,7 @@ import { APP_NAME } from 'constants/app.constant'
 const LOGO_SRC_PATH = '/img/logo/'
 
 const Logo = (props) => {
-    const { type, mode, gutter, className, imgClass, style, logoWidth } = props
+    const { type, mode, gutter, className, imgClass, style, logoWidth, src } = props
 
     return (
         <div
@@ -18,7 +18,7 @@ const Logo = (props) => {
         >
             <img
                 className={imgClass}
-                src={`${LOGO_SRC_PATH}logo-${mode}-${type}.png`}
+                src={src || `${LOGO_SRC_PATH}logo-${mode}-${type}.png`}
                 alt={`${APP_NAME} logo`}
             />
         </div>
