@@ -89,12 +89,19 @@ const SideNav = () => {
                         !sideNavCollapse && 'side-nav-expand'
                     )}
                 >
-                  
                     
                     <div className="side-nav-header" >
-                   
-                      <h2>Jadwel</h2>
-                         
+                        <Logo
+                            mode={logoMode()}
+                            type={sideNavCollapse ? 'streamline' : 'full'}
+                            gutter={
+                                sideNavCollapse
+                                    ? SIDE_NAV_CONTENT_GUTTER
+                                    : LOGO_X_GUTTER
+                            }
+                            style={{ position: "relative", top: 0 }}
+                            src="/img/logo/jad.png"
+                        />
                     </div>
                     {sideNavCollapse ? (
                         menuContent

@@ -53,7 +53,7 @@ const navigationConfig = [
         key: 'Suggest Course',
         path: '/SuggestedCourse',
         title: 'Suggest Course',
-        translateKey: 'nav.SuggestedCourse',
+      
         icon: 'singleMenu',
         type: NAV_ITEM_TYPE_ITEM,
         authority: ['student'],

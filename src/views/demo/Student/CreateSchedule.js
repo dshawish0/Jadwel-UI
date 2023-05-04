@@ -1,108 +1,192 @@
-import { useState } from 'react';
+import React from 'react'
+import {
+   
+    Button,
+    Select,
+    FormItem,
+    FormContainer,
+} from 'components/ui'
+import { Field, Form, Formik } from 'formik'
+import CreatableSelect from 'react-select/creatable'
+import * as Yup from 'yup'
+import { Alert } from 'components/ui'
 
-function CreateSchedule() {
-  const [students, setStudents] = useState([]);
-  const [name, setName] = useState('');
-  const [time, setTime] = useState('');
-  const [days, setDays] = useState('');
-  const [drName, setDrName] = useState('');
+const options = [
+    { value: 'Sunday , Tuesday , Thursday', label: 'Sunday , Tuesday , Thursday' },
+    { value: 'Monday , Wednesday', label:  'Monday , Wednesday' },
+    { value: 'All Days', label: 'All Days' },
+]
+const options1 = [
+  { value: 'Computer adn Information Technonlogy', label: 'Computer adn Information Technonlogy' },
+  { value: 'Medcine', label:  'Monday , Wednesday' },
+  { value: 'Engineering', label: 'Engineering' },
+]
 
-  const handleRegister = (e) => {
-    e.preventDefault();
-    const newStudent = {
-      name,
-      time,
-      days,
-      drName
-    };
-    setStudents([...students, newStudent]);
-    setName('');
-    setTime('');
-    setDays('');
-    setDrName('');
-  };
+const validationSchema = Yup.object().shape({
+    multipleSelect: Yup.array().min(1, 'At least one is selected!')
+  
+})
 
-  return (
-    <div className="container mx-auto mt-4 p-4">
-      <form onSubmit={handleRegister}>
-        <div className="mb-4">
-          <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
-            Name
-          </label>
-          <input
-            type="text"
-            id="name"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
+const MixedFormControl = () => {
+    const onSetFormFile = (form, field, files) => {
+        form.setFieldValue(field.name, files)
+    }
+
+    
+
+    return (
+
+        <div>
+          
+          <Alert showIcon style={{ margin: '0 auto 20px', textAlign: 'center' }}>
+    عليك الرجوع دائماً إلى التعليمات في دليل الطالب والالتزام بها.
+</Alert>
+
+            
+            <Formik
+                enableReinitialize
+                initialValues={{
+                    
+                    multipleSelect: [],
+                    date: null,
+                    time: null,
+                    singleCheckbox: false,
+                    multipleCheckbox: [],
+                    radio: '',
+                    switcher: false,
+                    segment: [],
+                    upload: [],
+                }}
+                validationSchema={validationSchema}
+                onSubmit={(values, { setSubmitting }) => {
+                    console.log('values', values)
+                    setTimeout(() => {
+                        alert(JSON.stringify(values, null, 2))
+                        setSubmitting(false)
+                    }, 400)
+                }}
+            >
+                {({ values, touched, errors, resetForm }) => (
+                    <Form>
+                        <FormContainer>
+                            <FormItem
+                                label="Days: "     
+                              
+                                errorMessage={errors.multipleSelect}
+                            >
+                                <Field name="multipleSelect">
+                                    {({ field, form }) => (
+                                        <Select
+                                            componentAs={CreatableSelect}
+                                            
+                                            field={field}
+                                            form={form}
+                                            options={options}
+                                            value={values.multipleSelect}
+                                            onChange={(option) => {
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    option
+                                                )
+                                            }}
+                                        />
+                                    )}
+                                </Field>
+                            </FormItem>
+
+                            <FormItem
+                                label="College: "     
+                              
+                                errorMessage={errors.multipleSelect}
+                            >
+                                <Field name="multipleSelect">
+                                    {({ field, form }) => (
+                                        <Select
+                                            componentAs={CreatableSelect}
+                                            
+                                            field={field }
+                                            form={form}
+                                            options={options1}
+                                            value={values.multipleSelect}
+                                            onChange={(options1) => {
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    options1
+                                                )
+                                            }}
+                                        />
+                                    )}
+                                </Field>
+                            </FormItem>
+
+                            <FormItem
+                                label="Departments: "     
+                              
+                                errorMessage={errors.multipleSelect}
+                            >
+                                <Field name="multipleSelect">
+                                    {({ field, form }) => (
+                                        <Select
+                                            componentAs={CreatableSelect}
+                                            
+                                            field={field }
+                                            form={form}
+                                            options={options1}
+                                            value={values.multipleSelect}
+                                            onChange={(options1) => {
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    options1
+                                                )
+                                            }}
+                                        />
+                                    )}
+                                </Field>
+                            </FormItem>
+
+                            <FormItem
+                                label="Courses: "     
+                              
+                                errorMessage={errors.multipleSelect}
+                            >
+                                <Field name="multipleSelect">
+                                    {({ field, form }) => (
+                                        <Select
+                                            componentAs={CreatableSelect}
+                                            
+                                            field={field }
+                                            form={form}
+                                            options={options1}
+                                            value={values.multipleSelect}
+                                            onChange={(options1) => {
+                                                form.setFieldValue(
+                                                    field.name,
+                                                    options1
+                                                )
+                                            }}
+                                        />
+                                    )}
+                                </Field>
+                            </FormItem>
+
+                            <FormItem>
+                                <Button
+                                    type="reset"
+                                    className="ltr:mr-2 rtl:ml-2"
+                                    onClick={resetForm}
+                                >
+                                    Reset
+                                </Button>
+                                <Button variant="solid" type="submit">
+                                    Submit
+                                </Button>
+                            </FormItem>
+                        </FormContainer>
+                    </Form>
+                )}
+            </Formik>
         </div>
-        <div className="mb-4">
-          <label htmlFor="time" className="block text-gray-700 font-bold mb-2">
-            Time
-          </label>
-          <input
-            type="text"
-            id="time"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="days" className="block text-gray-700 font-bold mb-2">
-            Days
-          </label>
-          <input
-            type="text"
-            id="days"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            value={days}
-            onChange={(e) => setDays(e.target.value)}
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="drName" className="block text-gray-700 font-bold mb-2">
-            Doctor's Name
-          </label>
-          <input
-            type="text"
-            id="drName"
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            value={drName}
-            onChange={(e) => setDrName(e.target.value)}
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-        >
-          Register
-        </button>
-      </form>
-      <table className="mt-4 table-auto">
-        <thead>
-          <tr>
-            <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2">Time</th>
-            <th className="px-4 py-2">Days</th>
-            <th className="px-4 py-2">Doctor's Name</th>
-          </tr>
-        </thead>
-        <tbody>
-         
-        {students.map((student, index) => (
-<tr key={index}>
-<td className="border px-4 py-2">{student.name}</td>
-<td className="border px-4 py-2">{student.time}</td>
-<td className="border px-4 py-2">{student.days}</td>
-<td className="border px-4 py-2">{student.drName}</td>
-</tr>
-))}
-</tbody>
-</table>
-</div>
-);
+    )
 }
 
-export default CreateSchedule;
+export default MixedFormControl
