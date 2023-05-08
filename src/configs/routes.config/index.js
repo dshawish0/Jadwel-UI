@@ -26,12 +26,6 @@ export const protectedRoutes = [
         authority: ['student'],
     },
     {
-        key: 'CreateSchedule',
-        path: '/CreateSchedule',
-        component: React.lazy(() => import('views/demo/Student/Form/Schedule')),
-        authority: [],
-    },
-    {
         key: 'ViewSchedule',
         path: '/ViewSchedule',
         component: React.lazy(() => import('views/demo/Student/ViewSchedule')),

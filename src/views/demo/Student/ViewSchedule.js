@@ -20,8 +20,8 @@ const ViewSchedule = () => {
         pageSize: 10,
         query: '',
         sort: {
-            order: '',
-            key: '',
+            order: 'desc',
+            key: 'id',
         },
     })
 

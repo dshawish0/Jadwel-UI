@@ -28,7 +28,7 @@ const navigationConfig = [
         authority: ['student'],
         subMenu: [
             {
-                key: 'View',
+                key: 'ViewSchedule',
                 path: '/ViewSchedule',
                 title: 'View Suggested Sceduales',
                 translateKey: 'nav.View',

@@ -12,10 +12,9 @@ import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { Alert } from 'components/ui'
 import { apiCreateSchedule } from 'services/scheduleService'
-import { useNavigate } from 'react-router-dom'
-import { cloneDeep } from 'lodash'
+import { cloneDeep, random } from 'lodash'
 import useUniqueId from 'components/ui/hooks/useUniqueId'
-import { HiDocumentAdd, HiPlusCircle } from 'react-icons/hi'
+import { HiPlusCircle } from 'react-icons/hi'
 
 const daysOptions = [
     {
@@ -158,7 +157,7 @@ const CreatableSelect = ({ fetchData }) => {
                     }}
                     validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting }) => {
-                        const days = values.days[0].value.split(' , ')
+                        const days = values.days.map((day) => day.value)
                         const college = values.college.value
                         const departments = values.departments.map(
                             (dept) => dept.value
