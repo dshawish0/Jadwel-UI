@@ -1,11 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Button, Input } from 'components/ui'
-import { DataTable } from 'components/shared'
+import { Button, Dialog, Input, Notification, toast } from 'components/ui'
+import { AdaptableCard, DataTable } from 'components/shared'
 import debounce from 'lodash/debounce'
 import axios from 'axios'
+import { apiDeleteSchedule } from 'services/scheduleService'
+import { useNavigate } from 'react-router-dom'
+import { HiPencilAlt, HiPhone, HiTrash } from 'react-icons/hi'
+import CreatableSelect from './Form/Schedule'
 
 /** Example purpose only */
 const ViewSchedule = () => {
+    const navigate = useNavigate()
+
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [tableData, setTableData] = useState({
@@ -18,6 +24,25 @@ const ViewSchedule = () => {
             key: '',
         },
     })
+
+    const [dialogItemId, setDialogItemId] = useState(false)
+    const [dialogIsOpen, setIsOpen] = useState(false)
+
+    const openDialog = (props) => {
+        setDialogItemId(props.row.original.id)
+        setIsOpen(true)
+    }
+
+    const onDialogClose = (e) => {
+        console.log('onDialogClose', e)
+        setIsOpen(false)
+    }
+
+    const onDialogOk = (e) => {
+        handleDelete()
+        setDialogItemId(false)
+        setIsOpen(false)
+    }
 
     const inputRef = useRef()
 
@@ -37,7 +62,34 @@ const ViewSchedule = () => {
     }
 
     const handleAction = (cellProps) => {
+        alert('@todo Edit')
         console.log('Action clicked', cellProps)
+    }
+    const handleDelete = async () => {
+        setLoading(true)
+        const success = await apiDeleteSchedule({ id: dialogItemId })
+        if (success) {
+            const filteredData = data.filter((item) => item.id !== dialogItemId)
+            setData(filteredData)
+            popNotification('deleted')
+        }
+        setLoading(false)
+    }
+
+    const popNotification = (keyword) => {
+        toast.push(
+            <Notification
+                title={`Successfuly ${keyword}`}
+                type="success"
+                duration={2500}
+            >
+                Schedule successfuly {keyword}
+            </Notification>,
+            {
+                placement: 'top-center',
+            }
+        )
+        //  navigate('/ViewSchedule')
     }
 
     const columns = [
@@ -47,28 +99,39 @@ const ViewSchedule = () => {
         },
         {
             header: 'college',
+            enableSorting: false,
             accessorKey: 'college',
         },
         {
             header: 'departments',
+            enableSorting: false,
             accessorKey: 'departments',
         },
         {
             header: 'courses',
+            enableSorting: false,
             accessorKey: 'courses',
         },
         {
             header: '',
             id: 'action',
             cell: (props) => (
-                <>
-                    <Button size="xs" onClick={() => handleAction(props)}>
-                        Edit
-                    </Button>
-                    <Button size="xs" onClick={() => handleAction(props)}>
-                        Delete
-                    </Button>
-                </>
+                <div className="flex items-center gap-4">
+                    <Button
+                        shape="circle"
+                        size="sm"
+                        variant="twoTone"
+                        onClick={() => handleAction(props)}
+                        icon={<HiPencilAlt />}
+                    />
+                    <Button
+                        shape="circle"
+                        size="sm"
+                        variant="twoTone"
+                        onClick={() => openDialog(props)}
+                        icon={<HiTrash />}
+                    />
+                </div>
             ),
         },
     ]
@@ -89,22 +152,22 @@ const ViewSchedule = () => {
             ...{ sort: { order, key } },
         }))
     }
+    const fetchData = async () => {
+        setLoading(true)
+        const response = await axios.post('/api/schedule/data', tableData)
+        console.log('response')
+        console.log(response)
+        if (response.data) {
+            setData(response.data.data)
+            setLoading(false)
+            setTableData((prevData) => ({
+                ...prevData,
+                ...{ total: response.data.total },
+            }))
+        }
+    }
 
     useEffect(() => {
-        const fetchData = async () => {
-            setLoading(true)
-            const response = await axios.post('/api/schedule/data', tableData)
-            console.log('response')
-            console.log(response)
-            if (response.data) {
-                setData(response.data.data)
-                setLoading(false)
-                setTableData((prevData) => ({
-                    ...prevData,
-                    ...{ total: response.data.total },
-                }))
-            }
-        }
         fetchData()
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
@@ -115,15 +178,22 @@ const ViewSchedule = () => {
     ])
 
     return (
-        <>
-            <div className="flex justify-end mb-4">
-                <Input
-                    ref={inputRef}
-                    placeholder="Search..."
-                    size="sm"
-                    className="lg:w-52"
-                    onChange={handleChange}
-                />
+        <AdaptableCard className="h-full" bodyClass="h-full">
+            <div className="lg:flex items-center justify-between mb-4">
+                <div className="flex items-center gap-4">
+                    <h3 className="mb-4 lg:mb-0">Schedules</h3>
+                    <CreatableSelect fetchData={fetchData} />
+                </div>
+
+                <div className="flex justify-end mb-4">
+                    <Input
+                        ref={inputRef}
+                        placeholder="Search..."
+                        size="sm"
+                        className="lg:w-52"
+                        onChange={handleChange}
+                    />
+                </div>
             </div>
             <DataTable
                 columns={columns}
@@ -134,7 +204,27 @@ const ViewSchedule = () => {
                 onSelectChange={handleSelectChange}
                 onSort={handleSort}
             />
-        </>
+            <Dialog
+                isOpen={dialogIsOpen}
+                onClose={onDialogClose}
+                onRequestClose={onDialogClose}
+            >
+                <h5 className="mb-4">Confirm Delete Schedule</h5>
+                <p>Are you sure you want to delete this schedule?</p>
+                <div className="text-right mt-6">
+                    <Button
+                        className="ltr:mr-2 rtl:ml-2"
+                        variant="plain"
+                        onClick={onDialogClose}
+                    >
+                        Cancel
+                    </Button>
+                    <Button variant="solid" onClick={onDialogOk}>
+                        Confirm
+                    </Button>
+                </div>
+            </Dialog>
+        </AdaptableCard>
     )
 }
 

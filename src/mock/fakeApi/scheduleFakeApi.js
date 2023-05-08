@@ -7,12 +7,12 @@ export default function scheduleFakeApi(server, apiPrefix) {
         const body = JSON.parse(requestBody)
         const { pageIndex, pageSize, sort, query } = body
         const { order, key } = sort
-        const products = schema.db.scheduleData
-        const sanitizeProducts = products.filter(
+        const scheduleData = schema.db.scheduleData
+        const sanitizeProducts = scheduleData.filter(
             (elm) => typeof elm !== 'function'
         )
         let data = sanitizeProducts
-        let total = products.length
+        let total = scheduleData.length
 
         if ((key === 'category' || key === 'name') && order) {
             data.sort(sortBy(key, order === 'desc', (a) => a.toUpperCase()))
@@ -35,22 +35,22 @@ export default function scheduleFakeApi(server, apiPrefix) {
     })
 
     server.del(
-        `${apiPrefix}/sales/products/delete`,
+        `${apiPrefix}/schedule/data/delete`,
         (schema, { requestBody }) => {
             const { id } = JSON.parse(requestBody)
-            schema.db.productsData.remove({ id })
+            schema.db.scheduleData.remove({ id })
             return true
         }
     )
 
-    server.get(`${apiPrefix}/sales/product`, (schema, { queryParams }) => {
+    server.get(`${apiPrefix}/schedule/product`, (schema, { queryParams }) => {
         const id = queryParams.id
         const product = schema.db.productsData.find(id)
         return product
     })
 
     server.put(
-        `${apiPrefix}/sales/products/update`,
+        `${apiPrefix}/schedule/products/update`,
         (schema, { requestBody }) => {
             const data = JSON.parse(requestBody)
             const { id } = data
@@ -60,15 +60,15 @@ export default function scheduleFakeApi(server, apiPrefix) {
     )
 
     server.post(
-        `${apiPrefix}/sales/products/create`,
+        `${apiPrefix}/schedule/data/create`,
         (schema, { requestBody }) => {
             const data = JSON.parse(requestBody)
-            schema.db.productsData.insert(data)
+            schema.db.scheduleData.insert(data)
             return true
         }
     )
 
-    server.get(`${apiPrefix}/sales/orders`, (schema, { queryParams }) => {
+    server.get(`${apiPrefix}/schedule/orders`, (schema, { queryParams }) => {
         const { pageIndex, pageSize, sort, query } = queryParams
         const { order, key } = JSON.parse(sort)
         const orders = schema.db.ordersData
@@ -106,7 +106,7 @@ export default function scheduleFakeApi(server, apiPrefix) {
     })
 
     server.del(
-        `${apiPrefix}/sales/orders/delete`,
+        `${apiPrefix}/schedule/orders/delete`,
         (schema, { requestBody }) => {
             const { id } = JSON.parse(requestBody)
             id.forEach((elm) => {
@@ -117,7 +117,7 @@ export default function scheduleFakeApi(server, apiPrefix) {
     )
 
     server.get(
-        `${apiPrefix}/sales/orders-details`,
+        `${apiPrefix}/schedule/orders-details`,
         (schema, { queryParams }) => {
             const { id } = queryParams
             const orderDetail = schema.db.orderDetailsData

@@ -15,9 +15,9 @@ const navigationConfig = [
         authority: [],
         subMenu: [],
     },
-   
+
     /** Example purpose only, please remove */
-    
+
     {
         key: 'Sceduales',
         path: '',
@@ -27,16 +27,6 @@ const navigationConfig = [
         type: NAV_ITEM_TYPE_COLLAPSE,
         authority: ['student'],
         subMenu: [
-            {
-                key: 'Create',
-                path: '/CreateSchedule',
-                title: 'Create Suggested Sceduale',
-                translateKey: 'nav.Create',
-                icon: '',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
-                subMenu: [],
-            },
             {
                 key: 'View',
                 path: '/ViewSchedule',
@@ -53,7 +43,7 @@ const navigationConfig = [
         key: 'Suggest Course',
         path: '/SuggestedCourse',
         title: 'Suggest Course',
-      
+
         icon: 'singleMenu',
         type: NAV_ITEM_TYPE_ITEM,
         authority: ['student'],

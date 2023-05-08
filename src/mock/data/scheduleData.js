@@ -1,5 +1,6 @@
 export const scheduleData = [
     {
+        id: 1,
         days: ['Monday', 'Wednesday', 'Friday'],
         college: 'ABC College',
         departments: ['Information Technology'],
@@ -10,42 +11,49 @@ export const scheduleData = [
         ],
     },
     {
+        id: 2,
         days: ['Tuesday', 'Thursday'],
         college: 'ABC College',
         departments: ['Information Technology'],
         courses: ['Advanced Programming', 'Data Structures and Algorithms'],
     },
     {
+        id: 3,
         days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
         college: 'ABC College',
         departments: ['Information Technology'],
         courses: ['Software Engineering', 'Computer Networks'],
     },
     {
+        id: 4,
         days: ['Monday', 'Wednesday', 'Friday'],
         college: 'ABC College',
         departments: ['Information Technology'],
         courses: ['Mobile Application Development', 'Computer Security'],
     },
     {
+        id: 5,
         days: ['Tuesday', 'Thursday'],
         college: 'ABC College',
         departments: ['Information Technology'],
         courses: ['Operating Systems', 'Artificial Intelligence'],
     },
     {
+        id: 6,
         days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
         college: 'ABC College',
         departments: ['Information Technology'],
         courses: ['IT Project Management', 'Cloud Computing'],
     },
     {
+        id: 7,
         days: ['Monday', 'Wednesday', 'Friday'],
         college: 'ABC College',
         departments: ['Information Technology'],
         courses: ['Human-Computer Interaction', 'Computer Graphics'],
     },
     {
+        id: 8,
         days: ['Tuesday', 'Thursday'],
         college: 'ABC College',
         departments: ['Information Technology'],
@@ -55,12 +63,14 @@ export const scheduleData = [
         ],
     },
     {
+        id: 9,
         days: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
         college: 'ABC College',
         departments: ['Information Technology'],
         courses: ['Digital Forensics', 'Internet of Things'],
     },
     {
+        id: 10,
         days: ['Monday', 'Wednesday', 'Friday'],
         college: 'ABC College',
         departments: ['Information Technology'],

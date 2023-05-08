@@ -20,13 +20,15 @@ export const protectedRoutes = [
     {
         key: 'suggestedCourse',
         path: '/SuggestedCourse',
-        component: React.lazy(() => import('views/demo/Student/SuggestedCourse')),
+        component: React.lazy(() =>
+            import('views/demo/Student/SuggestedCourse')
+        ),
         authority: ['student'],
     },
     {
         key: 'CreateSchedule',
         path: '/CreateSchedule',
-        component: React.lazy(() => import('views/demo/Student/CreateSchedule')),
+        component: React.lazy(() => import('views/demo/Student/Form/Schedule')),
         authority: [],
     },
     {
