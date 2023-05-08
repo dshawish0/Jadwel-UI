@@ -4,14 +4,11 @@ import { AdaptableCard, DataTable } from 'components/shared'
 import debounce from 'lodash/debounce'
 import axios from 'axios'
 import { apiDeleteSchedule } from 'services/scheduleService'
-import { useNavigate } from 'react-router-dom'
-import { HiPencilAlt, HiPhone, HiTrash } from 'react-icons/hi'
+import { HiPencilAlt, HiTrash } from 'react-icons/hi'
 import CreatableSelect from './Form/Schedule'
 
 /** Example purpose only */
 const ViewSchedule = () => {
-    const navigate = useNavigate()
-
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
     const [tableData, setTableData] = useState({

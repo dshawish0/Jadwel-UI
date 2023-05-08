@@ -12,7 +12,7 @@ import { Field, Form, Formik } from 'formik'
 import * as Yup from 'yup'
 import { Alert } from 'components/ui'
 import { apiCreateSchedule } from 'services/scheduleService'
-import { cloneDeep, random } from 'lodash'
+import { cloneDeep } from 'lodash'
 import useUniqueId from 'components/ui/hooks/useUniqueId'
 import { HiPlusCircle } from 'react-icons/hi'
 

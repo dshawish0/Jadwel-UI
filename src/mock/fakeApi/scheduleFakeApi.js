@@ -14,7 +14,7 @@ export default function scheduleFakeApi(server, apiPrefix) {
         let data = sanitizeProducts
         let total = scheduleData.length
 
-        if ((key === 'category' || key === 'name') && order) {
+        if ((key === 'days' || key === 'college') && order) {
             data.sort(sortBy(key, order === 'desc', (a) => a.toUpperCase()))
         } else {
             data.sort(sortBy(key, order === 'desc', parseInt))
