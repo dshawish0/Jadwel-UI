@@ -64,7 +64,7 @@ const SuggestedCourse = () => {
                     <Form>
                         <FormContainer>
                             <FormItem
-                                label="Days: "
+                                label="Course: "
                                 errorMessage={errors.multipleSelect}
                             >
                                 <Field name="multipleSelect">

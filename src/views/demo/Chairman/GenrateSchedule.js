@@ -1,7 +1,8 @@
 import React from 'react'
 
 /** Example purpose only */
-const GenrateSchedule = () => {
+const GenrateSchedule = () =>
+{
     return <div>GenrateSchedule</div>
 }
 

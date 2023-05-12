@@ -1,7 +1,8 @@
 import React from 'react'
 
-export const UpoadRefrenceSchedule = () => {
+ const UpoadRefrenceSchedule = () => {
   return (
     <div>UpoadRefrenceSchedule</div>
   )
 }
+export default UpoadRefrenceSchedule

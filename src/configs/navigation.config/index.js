@@ -18,6 +18,7 @@ const navigationConfig = [
 
     /** Example purpose only, please remove */
 
+    //Student
     {
         key: 'Sceduales',
         path: '',
@@ -41,7 +42,7 @@ const navigationConfig = [
     },
     {
         key: 'Suggest Course',
-        path: '/SuggestedCourse',
+        path: '/suggested-course',
         title: 'Suggest Course',
 
         icon: 'singleMenu',
@@ -49,58 +50,80 @@ const navigationConfig = [
         authority: ['student'],
         subMenu: [],
     },
+    //Chairman 
     {
-        key: 'groupMenu',
+        key: 'ChairmanMenu',
         path: '',
         title: 'Chairman Menu',
-        //  translateKey: 'nav.groupMenu.groupMenu',
-        icon: '',
+         translateKey: 'nav.ChairmanMenu.ChairmanMenu',
+        icon: 'collapseMenu',
         type: NAV_ITEM_TYPE_COLLAPSE,
         authority: ['chairman'],
         subMenu: [
             {
-                key: 'CompareSchedule',
-                path: '/CompareSchedule',
-                title: 'Compare Schedule',
-                //translateKey: 'nav.groupMenu.single',
-                icon: 'groupSingleMenu',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: ['chairman'],
+                key: 'Genrate Schedule',
+                path: '/genrate-schedule',
+                title: 'Genrate Schedule',
+                translateKey: 'GenrateSchedule',
+                icon: 'groupCollapseMenu',
+                type: NAV_ITEM_TYPE_COLLAPSE,
+                authority: [],
                 subMenu: [],
             },
             {
-                key: 'groupMenu.collapse',
-                path: '',
-                title: 'Group collapse menu',
-                translateKey: 'nav.groupMenu.collapse.collapse',
+                key: 'CompareSchedule',
+                path: '/compare-schedule',
+                title: 'Compare Schedule',
+                icon: 'groupSingleMenu',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'UploadOfferCourses',
+                path: '/UploadOfferCourses',
+                title: 'Upload Offerd Courses',
+                translateKey: 'UploadOfferCourses',
                 icon: 'groupCollapseMenu',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: ['chairman'],
-                subMenu: [
-                    {
-                        key: 'groupMenu.collapse.item1',
-                        path: '/group-collapse-menu-item-view-1',
-                        title: 'Menu item 1',
-                        translateKey: 'nav.groupMenu.collapse.item1',
-                        icon: '',
-                        type: NAV_ITEM_TYPE_ITEM,
-                        authority: [],
-                        subMenu: [],
-                    },
-                    {
-                        key: 'groupMenu.collapse.item2',
-                        path: '/group-collapse-menu-item-view-2',
-                        title: 'Menu item 2',
-                        translateKey: 'nav.groupMenu.collapse.item2',
-                        icon: '',
-                        type: NAV_ITEM_TYPE_ITEM,
-                        authority: [],
-                        subMenu: [],
-                    },
-                ],
+                authority: [],
+                subMenu: [],
+            },
+            
+            {
+                key: 'UpoadRefrenceSchedule',
+                path: '/UpoadRefrenceSchedule',
+                title: 'Upoad Refrence Schedule',
+                translateKey: 'UpoadRefrenceSchedule',
+                icon: 'groupCollapseMenu',
+                type: NAV_ITEM_TYPE_COLLAPSE,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'ViewSuggestedCourses',
+                path: '/ViewSuggestedCourses',
+                title: 'View Suggested Courses',
+                translateKey: 'ViewSuggestedCourses',
+                icon: 'groupCollapseMenu',
+                type: NAV_ITEM_TYPE_COLLAPSE,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'NotifyStudent',
+                path: '/NotifyStudent',
+                title: 'NotifyStudent',
+                translateKey: 'NotifyStudent',
+                icon: 'groupCollapseMenu',
+                type: NAV_ITEM_TYPE_COLLAPSE,
+                authority: [],
+                subMenu: [],
             },
         ],
     },
+    //Registerr
+    
 ]
 
 export default navigationConfig

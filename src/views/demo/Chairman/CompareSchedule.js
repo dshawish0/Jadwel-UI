@@ -1,7 +1,11 @@
 import React from 'react'
-
-export const CompareSchedule = () => {
+const CompareSchedule = () => {
   return (
-    <div>CompareSchedule</div>
-  )
+  
+    <div>Hello form suggested</div>
+
+  );
 }
+
+export default CompareSchedule;
+

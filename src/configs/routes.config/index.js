@@ -8,18 +8,18 @@ export const protectedRoutes = [
         key: 'home',
         path: '/home',
         component: React.lazy(() => import('views/Home')),
-        authority: ['student'],
+        authority: ['student','chairman'],
     },
-    {
-        key: 'home',
-        path: '/home',
-        component: React.lazy(() => import('views/chairmanhome')),
-        authority: ['chairman'],
-    },
+    // {
+    //     key: 'home2',
+    //     path: '/home2',
+    //     component: React.lazy(() => import('views/chairmanhome')),
+    //     authority: ['chairman'],
+    // },
     /** Example purpose only, please remove */
     {
         key: 'suggestedCourse',
-        path: '/SuggestedCourse',
+        path: '/suggested-course',
         component: React.lazy(() =>
             import('views/demo/Student/SuggestedCourse')
         ),
@@ -31,6 +31,13 @@ export const protectedRoutes = [
         component: React.lazy(() => import('views/demo/Student/ViewSchedule')),
         authority: [],
     },
+    //Chairman 
+    {
+        key: 'CompareSchedule',
+        path: '/compare-schedule',
+        component: React.lazy(() =>import('views/demo/Chairman/CompareSchedule')),
+        authority: ['chairman'],
+    },
     {
         key: 'UpoadRefrenceSchedule',
         path: '/UpoadRefrenceSchedule',
@@ -40,13 +47,14 @@ export const protectedRoutes = [
         authority: [],
     },
     {
-        key: 'CompareSchedule',
-        path: '/CompareSchedule',
+        key: 'UploadOfferCourses',
+        path: '/UploadOfferCourses',
         component: React.lazy(() =>
-            import('views/demo/Chairman/CompareSchedule')
+            import('views/demo/Chairman/UploadOfferCourses')
         ),
         authority: [],
     },
+   ,
     {
         key: 'groupMenu.collapse.item2',
         path: '/group-collapse-menu-item-view-2',
