@@ -91,8 +91,8 @@ const ViewSchedule = () => {
 
     const columns = [
         {
-            header: 'days',
-            accessorKey: 'days',
+            header: 'name',
+            accessorKey: 'name',
         },
         {
             header: 'college',
@@ -151,11 +151,11 @@ const ViewSchedule = () => {
     }
     const fetchData = async () => {
         setLoading(true)
-        const response = await axios.post('/api/schedule/data', tableData)
+        const response = await axios.get('/api/courses', tableData)
         console.log('response')
         console.log(response)
         if (response.data) {
-            setData(response.data.data)
+            setData(response.data)
             setLoading(false)
             setTableData((prevData) => ({
                 ...prevData,
