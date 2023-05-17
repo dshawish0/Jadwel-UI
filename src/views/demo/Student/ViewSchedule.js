@@ -95,14 +95,17 @@ const ViewSchedule = () => {
             accessorKey: 'name',
         },
         {
+            header: 'days',
+            accessorKey: 'day',
+        },
+        {
             header: 'college',
             enableSorting: false,
             accessorKey: 'college',
         },
         {
-            header: 'departments',
-            enableSorting: false,
-            accessorKey: 'departments',
+            header: 'departments',  
+            accessorKey: 'department_name',
         },
         {
             header: 'courses',
@@ -151,7 +154,7 @@ const ViewSchedule = () => {
     }
     const fetchData = async () => {
         setLoading(true)
-        const response = await axios.get('/api/courses', tableData)
+        const response = await axios.get('/api/courses' , tableData)
         console.log('response')
         console.log(response)
         if (response.data) {
@@ -178,7 +181,7 @@ const ViewSchedule = () => {
         <AdaptableCard className="h-full" bodyClass="h-full">
             <div className="lg:flex items-center justify-between mb-4">
                 <div className="flex items-center gap-4">
-                    <h3 className="mb-4 lg:mb-0">Schedules</h3>
+                    <h3 className="mb-4 lg:mb-0">Add Course</h3>
                     <CreatableSelect fetchData={fetchData} />
                 </div>
 

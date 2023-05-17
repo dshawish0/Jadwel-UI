@@ -1,119 +1,152 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react';
 import {
-    Button,
-    Select,
-    FormItem,
-    FormContainer,
-} from 'components/ui'
-import { Field, Form, Formik } from 'formik'
-import CreatableSelect from 'react-select/creatable'
-import * as Yup from 'yup'
-import { Alert } from 'components/ui'
-
-const options = [
-    { value: 'Sunday , Tuesday , Thursday', label: 'Sunday , Tuesday , Thursday' },
-    { value: 'Monday , Wednesday', label:  'Monday , Wednesday' },
-    { value: 'All Days', label: 'All Days' },
-]
-const options1 = [
-  { value: 'Computer adn Information Technonlogy', label: 'Computer adn Information Technonlogy' },
-  { value: 'Medcine', label:  'Monday , Wednesday' },
-  { value: 'Engineering', label: 'Engineering' },
-]
+  Button,
+  Select,
+  FormItem,
+  FormContainer,
+  Alert,
+} from 'components/ui';
+import { Field, Form, Formik } from 'formik';
+import CreatableSelect from 'react-select/creatable';
+import * as Yup from 'yup';
 
 const validationSchema = Yup.object().shape({
-    multipleSelect: Yup.array().min(1, 'At least one is selected!')
-  
-})
+  multipleSelect: Yup.array().min(1, 'At least one is selected!'),
+  message: Yup.string().required('Message is required'),
+});
 
 const SuggestedCourse = () => {
-    const [message, setMessage] = useState('')
+  const [courses, setCourses] = useState([]);
+  const [message, setMessage] = useState('');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState(null);
 
-    return (
-        <div>
-            <div dir="ltr">
-                <Alert showIcon style={{ margin: '0 auto 20px', textAlign: 'center' }}>
-                    المساق غير موجود في الجدول اذكر ووضح لماذا ترغب بتسجيله
-                </Alert>
-            </div>  
+  useEffect(() => {
+    fetch('/api/courses/0')
+      .then((response) => response.json())
+      .then((data) => {
+        const activeCourses = data.filter((course) => course.is_active);
+        setCourses(activeCourses);
+      })
+      .catch((error) => {
+        console.error('Error fetching courses:', error);
+      });
+  }, []);
 
-            <Formik
-                enableReinitialize
-                initialValues={{
-                    multipleSelect: [],
-                    date: null,
-                    time: null,
-                    singleCheckbox: false,
-                    multipleCheckbox: [],
-                    radio: '',
-                    switcher: false,
-                    segment: [],
-                    upload: [],
-                }}
-                validationSchema={validationSchema}
-                onSubmit={(values, { setSubmitting }) => {
-                    console.log('values', values)
-                    setTimeout(() => {
-                        alert(JSON.stringify(values, null, 2) + '\n\nMessage: ' + message)
-                        setMessage('')
-                        setSubmitting(false)
-                    }, 400)
-                }}
-            >
-                {({ values, errors, resetForm }) => (
-                    <Form>
-                        <FormContainer>
-                            <FormItem
-                                label="Course: "
-                                errorMessage={errors.multipleSelect}
-                            >
-                                <Field name="multipleSelect">
-                                    {({ field, form }) => (
-                                        <Select
-                                            componentAs={CreatableSelect}
-                                            field={field}
-                                            form={form}
-                                            options={options}
-                                            value={values.multipleSelect}
-                                            onChange={(option) => {
-                                                form.setFieldValue(field.name, option)
-                                            }}
-                                        />
-                                    )}
-                                </Field>
-                            </FormItem>
+  const handleSubmit = (values, { resetForm }) => {
+    setSubmitting(true);
+    setSubmitError(null);
 
-                            <FormItem label="Message:">
-                                <textarea
-                                    style={{ width: '100%', height: '100px', padding: '10px', boxSizing: 'border-box', borderRadius: '10px', border: '1px solid #ccc' }}
-                                    placeholder="Enter your message here"
-                                    name="message"
-                                    value={message}
-                                    onChange={(e) => setMessage(e.target.value)}
-                                />
-                            </FormItem>
+    fetch('/api/save-suggested-course', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(values),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log('Suggested course saved:', data);
+        alert('Suggested course saved successfully!');
+        resetForm();
+      })
+      .catch((error) => {
+        console.error('Error saving suggested course:', error);
+        setSubmitError('Failed to save suggested course. Please try again.');
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
+  };
 
-                     
-                               
+  return (
+    <div>
+      <div dir="ltr">
+        <Alert showIcon style={{ margin: '0 auto 20px', textAlign: 'center' }}>
+          المساق غير موجود في الجدول اذكر ووضح لماذا ترغب بتسجيله
+        </Alert>
+      </div>
 
-                             <FormItem>
-                                <Button
-                                    type="reset"
-                                    className="ltr:mr-2 rtl:ml-2"
-                                    onClick={resetForm}
-                                >
-                                    Reset
-                                </Button>
-                                <Button variant="solid" type="submit">
-                                    Submit
-                                </Button>
-                            </FormItem>
-                        </FormContainer>
-                    </Form>
+      <Formik
+        enableReinitialize
+        initialValues={{
+          multipleSelect: [],
+          message: '',
+        }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        {({ values, errors, resetForm, setFieldValue }) => (
+          <Form>
+            <FormContainer>
+              <FormItem
+                label="Course: "
+                errorMessage={errors.multipleSelect}
+              >
+                <Field name="multipleSelect">
+                  {({ field }) => (
+                    <Select
+                      componentAs={CreatableSelect}
+                      {...field}
+                      options={courses.map((course) => ({
+                        value: course.course_id,
+                        label: course.name,
+                      }))}
+                      onChange={(option) =>
+                        setFieldValue(field.name, option)
+                      }
+                    />
+                  )}
+                </Field>
+              </FormItem>
+
+              <FormItem label="Message:">
+                <textarea
+                  style={{
+                    width: '100%',
+                    height: '100px',
+                    padding: '10px',
+                    boxSizing: 'border-box',
+                    borderRadius: '10px',
+                    border: '1px solid #ccc',
+                  }}
+                  placeholder="Enter your message here"
+                  name="message"
+                  value={values.message}
+                  onChange={(e) => setFieldValue('message', e.target.value)}
+                />
+                {errors.message && (
+                  <div style={{ color: 'red' }}>{errors.message}</div>
                 )}
-            </Formik>
-        </div>
-    )
-}
+              </FormItem>
 
-export default SuggestedCourse
+              {submitError && (
+                <div style={{ color: 'red', marginBottom: '10px' }}>
+                  {submitError}
+                </div>
+              )}
+
+              <FormItem>
+                <Button
+                  type="reset"
+                  className="ltr:mr-2 rtl:ml-2"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    resetForm();
+                  }}
+                >
+                  Reset
+                </Button>
+                <Button variant="solid" type="submit" disabled={submitting}>
+                  {submitting ? 'Submitting...' : 'Submit'}
+                </Button>
+              </FormItem>
+            </FormContainer>
+          </Form>
+        )}
+      </Formik>
+    </div>
+  );
+};
+
+export default SuggestedCourse;

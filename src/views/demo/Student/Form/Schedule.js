@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import {
     Button,
     Select,
@@ -18,19 +18,11 @@ import { HiPlusCircle } from 'react-icons/hi'
 
 const daysOptions = [
     {
-        value: 'Sunday , Tuesday , Thursday',
-        label: 'Sunday , Tuesday , Thursday',
+        value: 'Sunday - Tuesday - Thursday',
+        label: 'Sunday - Tuesday - Thursday',
     },
-    { value: 'Monday , Wednesday', label: 'Monday , Wednesday' },
+    { value: 'Monday - Wednesday', label: 'Monday - Wednesday' },
     { value: 'all', label: 'All Days' },
-]
-const collegeOptions = [
-    {
-        value: 'Computer and Information Technology',
-        label: 'Computer and Information Technology',
-    },
-    { value: 'Medicine', label: 'Medicine' },
-    { value: 'Engineering', label: 'Engineering' },
 ]
 
 const departmentsOption = [
@@ -41,6 +33,7 @@ const departmentsOption = [
     { value: 'Computer Science', label: 'Computer Science' },
     { value: 'Mathematics', label: 'Mathematics' },
 ]
+
 const coursesOptions = [
     {
         value: 'Introduction to Programming',
@@ -106,11 +99,30 @@ const CreatableSelect = ({ fetchData }) => {
             return fetchData()
         }
     }
+
     const type = 'new'
     const newId = useUniqueId('schedule-')
 
     const [dialogIsOpen, setIsOpen] = useState(false)
+    const [collegeOptions, setCollegeOptions] = useState([])
 
+    useEffect(() => {
+        const fetchColleges = async () => {
+            try {
+                const response = await fetch('/api/collages') // Replace with the correct API endpoint, e.g., '/api/colleges'
+                const data = await response.json()
+                const options = data.map((college) => ({
+                    value: college.name, // Use the name property as the value
+                    label: college.name, // Use the name property as the label
+                }))
+                setCollegeOptions(options)
+            } catch (error) {
+                console.error('Error fetching colleges:', error)
+            }
+        }
+
+        fetchColleges()
+    }, [])
     const openDialog = (props) => {
         setIsOpen(true)
     }
@@ -123,6 +135,47 @@ const CreatableSelect = ({ fetchData }) => {
     const onDialogOk = (e) => {
         setIsOpen(false)
     }
+
+    const [departmentOptions, setDepartmentOptions] = useState([])
+
+    useEffect(() => {
+        const fetchDepartments = async () => {
+            try {
+                const response = await fetch('/api/departments/1')
+                const data = await response.json()
+                const options = data.map((department) => ({
+                    value: department.name,
+                    label: department.name,
+                }))
+                setDepartmentOptions(options)
+            } catch (error) {
+                console.error('Error fetching departments:', error)
+            }
+        }
+
+        fetchDepartments()
+    }, [])
+
+    //
+    const [courseOptions, setCourseOptions] = useState([])
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await fetch('/api/courses')
+                const data = await response.json()
+                const options = data.map((course) => ({
+                    value: course.name,
+                    label: course.name,
+                }))
+                setCourseOptions(options)
+            } catch (error) {
+                console.error('Error fetching courses:', error)
+            }
+        }
+
+        fetchCourses()
+    }, [])
 
     return (
         <>
@@ -139,7 +192,7 @@ const CreatableSelect = ({ fetchData }) => {
                 onClose={onDialogClose}
                 onRequestClose={onDialogClose}
             >
-                <h5 className="mb-4">Add New Schedule</h5>
+                <h5 className="mb-4">Add New Course</h5>
 
                 <Alert showIcon>
                     {
@@ -265,22 +318,20 @@ const CreatableSelect = ({ fetchData }) => {
                                     <Field name="departments">
                                         {({ field, form }) => (
                                             <Select
-                                                isMulti
                                                 field={field}
                                                 form={form}
-                                                options={departmentsOption}
+                                                options={departmentOptions}
                                                 value={values.departments}
                                                 onChange={(option) => {
                                                     form.setFieldValue(
                                                         field.name,
-                                                        option
+                                                        option ? [option] : []
                                                     )
                                                 }}
                                             />
                                         )}
                                     </Field>
                                 </FormItem>
-
                                 <FormItem
                                     asterisk
                                     label="Courses"
@@ -292,22 +343,20 @@ const CreatableSelect = ({ fetchData }) => {
                                     <Field name="courses">
                                         {({ field, form }) => (
                                             <Select
-                                                isMulti
                                                 field={field}
                                                 form={form}
-                                                options={coursesOptions}
+                                                options={courseOptions}
                                                 value={values.courses}
                                                 onChange={(option) => {
                                                     form.setFieldValue(
                                                         field.name,
-                                                        option
+                                                        option ? [option] : []
                                                     )
                                                 }}
                                             />
                                         )}
                                     </Field>
                                 </FormItem>
-
                                 <FormItem className="mt-4">
                                     <Button
                                         type="reset"

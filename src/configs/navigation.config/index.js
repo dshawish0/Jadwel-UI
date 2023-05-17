@@ -7,7 +7,7 @@ import {
 const navigationConfig = [
     {
         key: 'home',
-        path: '/home',
+        path: '/',
         title: 'Home',
         translateKey: 'nav.home',
         icon: 'home',

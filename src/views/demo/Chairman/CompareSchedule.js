@@ -1,11 +1,12 @@
 import React from 'react'
-const CompareSchedule = () => {
-  return (
-  
-    <div>Hello form suggested</div>
 
-  );
+/** Example purpose only */
+import ProjectDashboard from 'views/ProjectDashboard';
+const GenrateSchedule = () =>
+{
+    return(
+        <ProjectDashboard/>
+    );
 }
 
-export default CompareSchedule;
-
+export default GenrateSchedule
