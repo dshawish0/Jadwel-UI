@@ -5,7 +5,7 @@ import ProjectDashboard from 'views/ProjectDashboard';
 const GenrateSchedule = () =>
 {
     return(
-        <ProjectDashboard/>
+       <div>Compare  Schedule</div>
     );
 }
 

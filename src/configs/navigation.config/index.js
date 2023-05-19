@@ -2,7 +2,7 @@ import {
     NAV_ITEM_TYPE_TITLE,
     NAV_ITEM_TYPE_COLLAPSE,
     NAV_ITEM_TYPE_ITEM,
-} from 'constants/navigation.constant'
+} from 'constants/navigation.constant';
 
 const navigationConfig = [
     {
@@ -44,25 +44,24 @@ const navigationConfig = [
         key: 'Suggest Course',
         path: '/suggested-course',
         title: 'Suggest Course',
-
         icon: 'singleMenu',
         type: NAV_ITEM_TYPE_ITEM,
         authority: ['student'],
         subMenu: [],
     },
-    //Chairman 
+    //Chairman
     {
         key: 'ChairmanMenu',
         path: '',
         title: 'Chairman Menu',
-         translateKey: 'nav.ChairmanMenu.ChairmanMenu',
+        translateKey: 'nav.ChairmanMenu.ChairmanMenu',
         icon: 'collapseMenu',
         type: NAV_ITEM_TYPE_COLLAPSE,
         authority: ['chairman'],
         subMenu: [
             {
                 key: 'Genrate Schedule',
-                path: '/genrate-schedule',
+                path: '/GenrateSchedule',
                 title: 'Genrate Schedule',
                 translateKey: 'GenrateSchedule',
                 icon: 'groupCollapseMenu',
@@ -89,7 +88,6 @@ const navigationConfig = [
                 authority: [],
                 subMenu: [],
             },
-            
             {
                 key: 'UpoadRefrenceSchedule',
                 path: '/UpoadRefrenceSchedule',
@@ -123,7 +121,56 @@ const navigationConfig = [
         ],
     },
     //Registerr
-    
-]
+    {
+        key: 'registerr',
+        path: '',
+        title: 'Registerr Menu',
+        translateKey: 'nav.ChairmanMenu.ChairmanMenu',
+        icon: 'collapseMenu',
+        type: NAV_ITEM_TYPE_COLLAPSE,
+        authority: ['registerr'],
+        subMenu: [
+            {
+                key: 'MangeColleges',
+                path: '/MangeColleges',
+                title: 'Mange Colleges',
+                translateKey: 'GenrateSchedule',
+                icon: 'groupCollapseMenu',
+                type: NAV_ITEM_TYPE_COLLAPSE,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'MangeDepartment',
+                path: '/MangeDepartment',
+                title: 'MangeDepartment',
+                icon: 'groupSingleMenu',
+                type: NAV_ITEM_TYPE_ITEM,
+                authority: [],
+                subMenu: [],
+            },
+            {
+                key: 'MangeDepartmentCourses',
+                path: '/MangeDepartmentCourses',
+                title: 'Mange Department Courses',
+                translateKey: 'UploadOfferCourses',
+                icon: 'groupCollapseMenu',
+                type: NAV_ITEM_TYPE_COLLAPSE,
+                authority: ['registerr'],
+                subMenu: [],
+            },
+            {
+                key: 'NotifyChairman',
+                path: '/NotifyChairman',
+                title: 'Notify Chairman',
+                translateKey: 'UploadOfferCourses',
+                icon: 'groupCollapseMenu',
+                type: NAV_ITEM_TYPE_COLLAPSE,
+                authority: ['registerr'],
+                subMenu: [],
+            },
+        ],
+    },
+];
 
-export default navigationConfig
+export default navigationConfig;

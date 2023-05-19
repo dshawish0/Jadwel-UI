@@ -62,17 +62,23 @@ const MailSideBarContent = () => {
     }, [])
 
     const getCategory = (value) => {
-        const categories = [...groupList, ...labelList]
-        let category = value
+        const categories = [...groupList, ...labelList];
+        let category = value;
         if (category === 'mail') {
-            category = 'inbox'
+          category = 'inbox';
         }
-        return {
+        const foundCategory = categories.find((cat) => cat.value === category);
+        if (foundCategory) {
+          return {
             value: category,
-            label: categories.find((cat) => cat.value === category).label,
+            label: foundCategory.label,
+          };
+        } else {
+          // Handle the case when the category is not found
+          console.error(`Category '${category}' not found`);
+          return null; // Return an appropriate value or handle the error accordingly
         }
-    }
-
+      };
     return (
         <ScrollBar direction={direction}>
             <div className="flex flex-col justify-between h-full">

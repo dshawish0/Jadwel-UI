@@ -112,7 +112,7 @@ const CreatableSelect = ({ fetchData }) => {
                 const response = await fetch('/api/collages') // Replace with the correct API endpoint, e.g., '/api/colleges'
                 const data = await response.json()
                 const options = data.map((college) => ({
-                    value: college.name, // Use the name property as the value
+                    value: college.collageId, // Use the name property as the value
                     label: college.name, // Use the name property as the label
                 }))
                 setCollegeOptions(options)
@@ -137,21 +137,25 @@ const CreatableSelect = ({ fetchData }) => {
     }
 
     const [departmentOptions, setDepartmentOptions] = useState([])
-
-    useEffect(() => {
-        const fetchDepartments = async () => {
-            try {
-                const response = await fetch('/api/departments/1')
-                const data = await response.json()
-                const options = data.map((department) => ({
-                    value: department.name,
-                    label: department.name,
-                }))
-                setDepartmentOptions(options)
-            } catch (error) {
-                console.error('Error fetching departments:', error)
-            }
+    const fetchDepartments = async (collage_id) => {
+        console.log(collage_id)
+       if(collage_id){
+        try {
+            const response = await fetch(`/api/departments/${collage_id}`)
+            const data = await response.json()
+            const options = data.map((department) => ({
+                value: department.name,
+                label: department.name,
+            }))
+            setDepartmentOptions(options)
+        } catch (error) {
+            console.error('Error fetching departments:', error)
         }
+       }
+       
+    }
+    useEffect(() => {
+      
 
         fetchDepartments()
     }, [])
@@ -300,6 +304,9 @@ const CreatableSelect = ({ fetchData }) => {
                                                         field.name,
                                                         option
                                                     )
+                                                    console.log(option)
+                                                    fetchDepartments(option.value)
+                                                    
                                                 }}
                                             />
                                         )}
@@ -318,6 +325,7 @@ const CreatableSelect = ({ fetchData }) => {
                                     <Field name="departments">
                                         {({ field, form }) => (
                                             <Select
+                                                // isDisabled={departmentOptions.length>0}
                                                 field={field}
                                                 form={form}
                                                 options={departmentOptions}
