@@ -42,7 +42,7 @@ export async function apiPutScheduleProduct(data) {
 
 export async function apiCreateSchedule(data) {
     return ApiService.fetchData({
-        url: '/schedule/data/create',
+        url: '/courses',
         method: 'post',
         data,
     })

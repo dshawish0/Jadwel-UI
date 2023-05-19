@@ -16,7 +16,31 @@ function useAuth() {
 
     const { token, signedIn } = useSelector((state) => state.auth.session)
 
+    const fetchUserDetail = async (user_id) => {
+       
+        try {
+            const response = await fetch(`/api/users/${user_id}`)
+            const user = await response.json()
+            dispatch(
+                setUser(
+                    {
+                        avatar: '',
+                        userName: `${user.fname} ${ user.mname} ${user.lname}`,
+                        authority: [user.roleName.toLowerCase()],
+                        email: '',
+                        department: user.departmentName,
+                    }
+                )
+            )
+        } catch (error) {
+            console.error('Error fetching departments:', error)
+        }
+    
+}
+
     const signIn = async (values) => {
+  
+       
         try {
             const resp = await apiSignIn(values)
 
@@ -24,16 +48,8 @@ function useAuth() {
                 const  token  = resp.data
                 dispatch(onSignInSuccess(token))
                 if (resp.data) {
-                    dispatch(
-                        setUser(
-                            resp.data.user || {
-                                avatar: '',
-                                userName: 'Anonymous',
-                                authority: ['student'],
-                                email: '',
-                            }
-                        )
-                    )
+                    const user = await fetchUserDetail(values.user_id)
+                   
                 }
                 const redirectUrl = query.get(REDIRECT_URL_KEY)
                 navigate(
@@ -94,7 +110,7 @@ function useAuth() {
     }
 
     const signOut = async () => {
-        await apiSignOut()
+        // await apiSignOut()
         handleSignOut()
     }
 

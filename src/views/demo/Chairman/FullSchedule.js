@@ -41,22 +41,64 @@ const FullSchedule = () => {
   const columns = [
     {
       header: 'Course Name',
-      accessorKey: 'courseName',
+      accessorKey: 'courseName',//row.original.courseName
+      cell: ({ row }) => {
+        return (
+          <div class="grid grid-cols-1 gap-2">
+            <div>Course Name:	INTRODUCTION TO PARAMEDIC</div>
+            <div>Credit Hours:	2</div>
+         </div>
+        )
+      }
     },
     {
-      header: 'Credit Hours',
-      accessorKey: 'creditHours',
+      header: 'Course Name2',
+      accessorKey: 'courseName2',//row.original.courseName
+      cell: ({ row }) => {
+        return (
+          <table class="table-auto border">
+          <thead>
+            <tr>
+              <th>Song</th>
+              <th>Artist</th>
+              <th>Year</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
+              <td>Malcolm Lockyer</td>
+              <td>1961</td>
+            </tr>
+            <tr>
+              <td>Witchy Woman</td> 
+              <td>The Eagles</td>
+              <td>1972</td>
+            </tr>
+            <tr>
+              <td>Shining Star</td>
+              <td>Earth, Wind, and Fire</td>
+              <td>1975</td>
+            </tr>
+          </tbody>
+        </table>
+        )
+        }
     },
+    // {
+    //   header: 'Credit Hours',
+    //   accessorKey: 'creditHours',
+    // },
     
-    {
-      header: 'Days',
-      accessorKey: 'days',
-    },
-    {
-      header: 'Capacity',
-      enableSorting: false,
-      accessorKey: 'capacity',
-    },
+    // {
+    //   header: 'Days',
+    //   accessorKey: 'days',
+    // },
+    // {
+    //   header: 'Capacity',
+    //   enableSorting: false,
+    //   accessorKey: 'capacity',
+    // },
   ];
 
   const handlePaginationChange = (pageIndex) => {

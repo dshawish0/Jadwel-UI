@@ -59,12 +59,11 @@ const validationSchema = Yup.object().shape({
         .required('Please select at least one day!')
         .min(1, 'Please select at least one day!'),
     college: Yup.object().required('Please select a college!'),
-    departments: Yup.array()
-        .required('Please select at least one department!')
-        .min(1, 'Please select at least one department!'),
-    courses: Yup.array()
-        .required('Please select at least one course!')
-        .min(1, 'Please select at least one course!'),
+    departments: Yup.object().required('Please select at least one department!'),
+
+    courses: Yup.object().required('Please select at least one course!')
+        
+      
 })
 
 const CreatableSelect = ({ fetchData }) => {
@@ -138,48 +137,37 @@ const CreatableSelect = ({ fetchData }) => {
 
     const [departmentOptions, setDepartmentOptions] = useState([])
     const fetchDepartments = async (collage_id) => {
-        console.log(collage_id)
-       if(collage_id){
-        try {
-            const response = await fetch(`/api/departments/${collage_id}`)
-            const data = await response.json()
-            const options = data.map((department) => ({
-                value: department.name,
-                label: department.name,
-            }))
-            setDepartmentOptions(options)
-        } catch (error) {
-            console.error('Error fetching departments:', error)
-        }
-       }
        
+            try {
+                const response = await fetch(`/api/departments/${collage_id}`)
+                const data = await response.json()
+                const options = data.map((department) => ({
+                    value: department.departmentId,
+                    label: department.name,
+                }))
+                setDepartmentOptions(options)
+            } catch (error) {
+                console.error('Error fetching departments:', error)
+            }
+        
     }
-    useEffect(() => {
-      
-
-        fetchDepartments()
-    }, [])
 
     //
     const [courseOptions, setCourseOptions] = useState([])
 
-    useEffect(() => {
-        const fetchCourses = async () => {
-            try {
-                const response = await fetch('/api/courses')
-                const data = await response.json()
-                const options = data.map((course) => ({
-                    value: course.name,
-                    label: course.name,
-                }))
-                setCourseOptions(options)
-            } catch (error) {
-                console.error('Error fetching courses:', error)
-            }
+    const fetchCourses = async (dep_id) => {
+        try {
+            const response = await fetch(`/api/courses/${dep_id}`)
+            const data = await response.json()
+            const options = data.map((course) => ({
+                value: course.course_id,
+                label: course.name,
+            }))
+            setCourseOptions(options)
+        } catch (error) {
+            console.error('Error fetching courses:', error)
         }
-
-        fetchCourses()
-    }, [])
+    }
 
     return (
         <>
@@ -209,31 +197,25 @@ const CreatableSelect = ({ fetchData }) => {
                     initialValues={{
                         days: [],
                         college: '',
-                        departments: [],
-                        courses: [],
+                        departments:'',
+                        courses:'' ,
                     }}
                     validationSchema={validationSchema}
                     onSubmit={(values, { setSubmitting }) => {
                         const days = values.days.map((day) => day.value)
                         const college = values.college.value
-                        const departments = values.departments.map(
-                            (dept) => dept.value
-                        )
-                        const courses = values.courses.map(
-                            (course) => course.value
-                        )
+                        const department_id = values.departments.value
+                        const course = values.courses.label
 
                         const convertedData = {
-                            days,
-                            college,
-                            departments,
-                            courses,
+                            // days,
+                            // college,
+                            department_id,
+                            name: course,
                         }
-
+                     
                         const formData = cloneDeep(convertedData)
-                        if (type === 'new') {
-                            formData.id = newId
-                        }
+                    
                         handleFormSubmit(formData, setSubmitting)
                     }}
                 >
@@ -305,8 +287,9 @@ const CreatableSelect = ({ fetchData }) => {
                                                         option
                                                     )
                                                     console.log(option)
-                                                    fetchDepartments(option.value)
-                                                    
+                                                    fetchDepartments(
+                                                        option.value
+                                                    )
                                                 }}
                                             />
                                         )}
@@ -325,7 +308,9 @@ const CreatableSelect = ({ fetchData }) => {
                                     <Field name="departments">
                                         {({ field, form }) => (
                                             <Select
-                                                // isDisabled={departmentOptions.length>0}
+                                                isDisabled={
+                                                    departmentOptions.length < 1
+                                                }
                                                 field={field}
                                                 form={form}
                                                 options={departmentOptions}
@@ -333,8 +318,9 @@ const CreatableSelect = ({ fetchData }) => {
                                                 onChange={(option) => {
                                                     form.setFieldValue(
                                                         field.name,
-                                                        option ? [option] : []
+                                                        option 
                                                     )
+                                                    fetchCourses(option.value)
                                                 }}
                                             />
                                         )}
@@ -351,6 +337,9 @@ const CreatableSelect = ({ fetchData }) => {
                                     <Field name="courses">
                                         {({ field, form }) => (
                                             <Select
+                                                isDisabled={
+                                                    courseOptions.length < 1
+                                                }
                                                 field={field}
                                                 form={form}
                                                 options={courseOptions}
@@ -358,7 +347,7 @@ const CreatableSelect = ({ fetchData }) => {
                                                 onChange={(option) => {
                                                     form.setFieldValue(
                                                         field.name,
-                                                        option ? [option] : []
+                                                        option
                                                     )
                                                 }}
                                             />

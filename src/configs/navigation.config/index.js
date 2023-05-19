@@ -7,12 +7,12 @@ import {
 const navigationConfig = [
     {
         key: 'home',
-        path: '/',
+        path: '/home',
         title: 'Home',
         translateKey: 'nav.home',
         icon: 'home',
         type: NAV_ITEM_TYPE_ITEM,
-        authority: [],
+        authority: ['student', 'chairman' , 'registerr'],
         subMenu: [],
     },
 
@@ -156,7 +156,7 @@ const navigationConfig = [
                 translateKey: 'UploadOfferCourses',
                 icon: 'groupCollapseMenu',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: ['registerr'],
+                authority: [],
                 subMenu: [],
             },
             {
@@ -166,7 +166,7 @@ const navigationConfig = [
                 translateKey: 'UploadOfferCourses',
                 icon: 'groupCollapseMenu',
                 type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: ['registerr'],
+                authority: [],
                 subMenu: [],
             },
         ],
