@@ -15,6 +15,7 @@ const navigationConfig = [
         authority: ['student', 'chairman' , 'registerr'],
         subMenu: [],
     },
+    
 
     /** Example purpose only, please remove */
 
@@ -69,15 +70,15 @@ const navigationConfig = [
             //     authority: [],
             //     subMenu: [],
             // },
-            {
-                key: 'CompareSchedule',
-                path: '/compare-schedule',
-                title: 'Compare Schedule',
-                icon: 'groupSingleMenu',
-                type: NAV_ITEM_TYPE_ITEM,
-                authority: [],
-                subMenu: [],
-            },
+            // {
+            //     key: 'CompareSchedule',
+            //     path: '/compare-schedule',
+            //     title: 'Studnets',
+            //     icon: 'groupSingleMenu',
+            //     type: NAV_ITEM_TYPE_ITEM,
+            //     authority: [],
+            //     subMenu: [],
+            // },
             {
                 key: 'UploadOfferCourses',
                 path: '/UploadOfferCourses',

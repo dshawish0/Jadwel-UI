@@ -7,7 +7,7 @@ const UploadOfferCourses = () => {
     return (
         <div>
             <Alert className="mb-4" type="info" showIcon>
-            المساقات التي سوف تطرح على الفصل الدراسي   </Alert>
+          المساقات التي سوف تطرح على الفصل الدراسي     </Alert>
             <Table>
                 <THead>
                     <Tr>

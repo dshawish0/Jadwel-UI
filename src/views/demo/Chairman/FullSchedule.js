@@ -1,8 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'components/shared';
 import { AdaptableCard } from 'components/shared'
+import { Button, Dialog, Table, Alert } from 'components/ui';
+import StudentsInfo from './StudentsInfo';
+
+const { Tr, Th, Td, THead, TBody } = Table;
 
 const FullSchedule = () => {
+  
+  const [selectedStudent, setSelectedStudent] = useState(null);
+
+  const openDialog = (student) => {
+    setSelectedStudent(student);
+  };
+
+  const closeDialog = () => {
+    setSelectedStudent(null);
+  };
   const [data, setData] = useState([
     {
       id: 1,
@@ -70,7 +84,12 @@ const FullSchedule = () => {
             <tr>
               <td>Sunday , thr , thu </td>
               <td>100</td>
-              <td> <button>View</button></td>
+              <Td
+              style={{ cursor: 'pointer', textDecoration: 'underline' }}
+              onClick={() => openDialog('View')}
+            >
+              View
+            </Td>
 
             </tr>
             <tr>
@@ -149,6 +168,12 @@ const FullSchedule = () => {
         onSelectChange={handleSelectChange}
         onSort={handleSort}
       />
+        {/* Dialog */}
+        {selectedStudent && (
+        <Dialog isOpen={!!selectedStudent} onClose={closeDialog}>
+          <StudentsInfo/>
+        </Dialog>
+      )}
     </AdaptableCard>
   );
 };
