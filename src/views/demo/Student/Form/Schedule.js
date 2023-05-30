@@ -89,7 +89,7 @@ const CreatableSelect = ({ fetchData }) => {
                     type="success"
                     duration={2500}
                 >
-                    Schedule successfuly added
+                    Course successfuly added
                 </Notification>,
                 {
                     placement: 'top-center',

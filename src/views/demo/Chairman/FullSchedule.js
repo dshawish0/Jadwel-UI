@@ -52,39 +52,46 @@ const FullSchedule = () => {
       }
     },
     {
-      header: 'Course Name2',
-      accessorKey: 'courseName2',//row.original.courseName
+     
+      accessorKey: 'Details',//row.original.courseName
       cell: ({ row }) => {
         return (
+          
           <table class="table-auto border">
           <thead>
             <tr>
-              <th>Song</th>
-              <th>Artist</th>
-              <th>Year</th>
+              <th>Days</th>
+             
+              <th>Registers</th>
+              <th>schedules</th>
             </tr>
           </thead>
           <tbody>
             <tr>
-              <td>The Sliding Mr. Bones (Next Stop, Pottersville)</td>
-              <td>Malcolm Lockyer</td>
-              <td>1961</td>
+              <td>Sunday , thr , thu </td>
+              <td>100</td>
+              <td> <button>View</button></td>
+
             </tr>
             <tr>
-              <td>Witchy Woman</td> 
-              <td>The Eagles</td>
-              <td>1972</td>
+              <td>mon , wed</td> 
+              <td>200</td>
+              <td> <button>View</button></td>
             </tr>
             <tr>
-              <td>Shining Star</td>
-              <td>Earth, Wind, and Fire</td>
-              <td>1975</td>
+              <td>all days</td>
+              <td>300</td>
+              <td> <button>View</button></td>
+
             </tr>
           </tbody>
         </table>
+        
         )
         }
+
     },
+   
     // {
     //   header: 'Credit Hours',
     //   accessorKey: 'creditHours',
@@ -130,7 +137,7 @@ const FullSchedule = () => {
     <AdaptableCard className="h-full" bodyClass="h-full">
       <div className="lg:flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
-          <h3 className="mb-4 lg:mb-0">AI Generated Schedule</h3>
+          <h3 className="mb-4 lg:mb-0">Statistical semester schedule </h3>
         </div>
       </div>
       <DataTable

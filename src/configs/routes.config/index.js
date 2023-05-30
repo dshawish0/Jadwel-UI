@@ -57,19 +57,27 @@ export const protectedRoutes = [
         ),
         authority: ['chairman'],
     },
-    {
-        key: 'UpoadRefrenceSchedule',
-        path: '/UpoadRefrenceSchedule',
-        component: React.lazy(() =>
-            import('views/demo/Chairman/UpoadRefrenceSchedule')
-        ),
-        authority: [],
-    },
+    // {
+    //     key: 'UpoadRefrenceSchedule',
+    //     path: '/UpoadRefrenceSchedule',
+    //     component: React.lazy(() =>
+    //         import('views/demo/Chairman/UpoadRefrenceSchedule')
+    //     ),
+    //     authority: [],
+    // },
     {
         key: 'UploadOfferCourses',
         path: '/UploadOfferCourses',
         component: React.lazy(() =>
             import('views/demo/Chairman/UploadOfferCourses')
+        ),
+        authority: [],
+    },
+    {
+        key: 'DateTimePicker',
+        path: '/DateTimePicker',
+        component: React.lazy(() =>
+            import('views/demo/Chairman/CompareSchedule')
         ),
         authority: [],
     },

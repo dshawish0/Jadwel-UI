@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Button, Dialog, Table , Alert } from 'components/ui';
-import Message from './Message'; // Import the Message component
+import { Button, Dialog, Table, Alert } from 'components/ui';
+import StudentMessagesTable from './StudentMessagesTable';
 
 const { Tr, Th, Td, THead, TBody } = Table;
 
@@ -19,45 +19,26 @@ const ViewSuggestedCourses = () => {
     <div>
       {/* Table */}
       <Alert className="mb-4" type="info" showIcon>
-           المساقات المقترحه من قبل الطلبة    </Alert>
+        المساقات المقترحة من قبل الطلبة
+      </Alert>
       <Table>
         <THead>
           <Tr>
             <Th>Course</Th>
-            <Th>Student message</Th>
             <Th>Num of requests</Th>
+            <Th>students messages</Th>
           </Tr>
         </THead>
         <TBody>
           <Tr>
             <Td>Software Documentation</Td>
-            <Td
-              style={{ cursor: 'pointer', textDecoration: 'underline' }}
-              onClick={() => openDialog('View')}
-            >
-              View
-            </Td>
             <Td>17</Td>
-          </Tr>
-          <Tr>
-            <Td>Software Design</Td>
-            <Td
-              style={{ cursor: 'pointer', textDecoration: 'underline' }}
-              onClick={() => openDialog('View')}
-            >
-             View
-            </Td>
-            <Td>26</Td>
-          </Tr>
-          <Tr>
-            <Td>Android</Td>
             <Td
               style={{ cursor: 'pointer', textDecoration: 'underline' }}
               onClick={() => openDialog('View')}
             >
               View
             </Td>
-            <Td>20</Td>
           </Tr>
         </TBody>
       </Table>
@@ -65,7 +46,7 @@ const ViewSuggestedCourses = () => {
       {/* Dialog */}
       {selectedStudent && (
         <Dialog isOpen={!!selectedStudent} onClose={closeDialog}>
-          <Message student={selectedStudent} onClose={closeDialog} />
+          <StudentMessagesTable student={selectedStudent} />
         </Dialog>
       )}
     </div>

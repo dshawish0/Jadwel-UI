@@ -6,6 +6,7 @@ import SideNavToggle from 'components/template/SideNavToggle'
 import MobileNav from 'components/template/MobileNav'
 import SideNav from 'components/template/SideNav'
 import View from 'views'
+import Notification from 'components/template/Notification'
 import HeaderLogo from 'components/template/HeaderLogo'
 import { Link } from 'react-router-dom'
 const HeaderActionsStart = () => {
@@ -22,7 +23,7 @@ const HeaderActionsEnd = () => {
     return (
         <>
         
-          
+           <Notification/>
             <UserDropdown hoverable={false} />
         </>
     )

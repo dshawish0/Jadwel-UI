@@ -2,7 +2,7 @@ import React, { cloneElement } from 'react'
 import { Avatar } from 'components/ui'
 import Logo from 'components/template/Logo'
 import { APP_NAME } from 'constants/app.constant'
-
+import Notification from 'components/template/Notification'
 const Side = ({ children, content, ...rest }) => {
     const { logoWidth } = rest; // Extracting logoWidth from rest props
 
@@ -10,14 +10,14 @@ const Side = ({ children, content, ...rest }) => {
         
         <div className="grid lg:grid-cols-3 h-full">
             <div
-                 
                 className="bg-no-repeat bg-cover py-6 px-16 flex-col justify-between hidden lg:flex"
                 style={{
                     backgroundImage: `url('/img/others/auth-side-bg.jpg')`,
                 }}
             >
                 <Logo mode="dark" logoWidth={logoWidth} /> {/* Update logoWidth prop */}
-                
+                                 <Notification/>
+
                 <div>
                     <div className="mb-6 flex items-center gap-4">
                         <Avatar
@@ -33,10 +33,10 @@ const Side = ({ children, content, ...rest }) => {
                         </div>
                     </div>
                     <p className="text-lg text-white opacity-80">
-                        "Jadwel aims to leverage the power of artificial intelligence (AI) 
-                        to streamline and optimize the registration process, Jadwel seeks to 
-                        simplify and enhance the user experience, making the registration 
-                        process easy to use and efficient. By automating repetitive tasks."
+                        "Jadwel simplifies and enhances the registration process,
+                         providing statistics to help the chairman and students understand the semester
+                          schedule based on individual schedules. It automates tasks,
+                         making registration efficient and user-friendly."
                     </p>
                 </div>
                 <span className="text-white">

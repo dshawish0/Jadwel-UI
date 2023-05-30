@@ -1,9 +1,12 @@
 import React from 'react'
 
+
 const MangeColleges = () => {
-  return (
-    <div>MangeColleges</div>
-  )
+    return (
+        <div>
+        
+        </div>
+    )
 }
 
 export default MangeColleges

@@ -94,24 +94,24 @@ const ViewSchedule = () => {
             header: 'name',
             accessorKey: 'name',
         },
-        {
-            header: 'days',
-            accessorKey: 'day',
-        },
-        {
-            header: 'college',
-            enableSorting: false,
-            accessorKey: 'college',
-        },
+        // {
+        //     header: 'days',
+        //     accessorKey: 'day',
+        // },
+        // {
+        //     header: 'college',
+        //     enableSorting: false,
+        //     accessorKey: 'college',
+        // },
         {
             header: 'departments',  
             accessorKey: 'department_name',
         },
-        {
-            header: 'courses',
-            enableSorting: false,
-            accessorKey: 'courses',
-        },
+        // {
+        //     header: 'courses',
+        //     enableSorting: false,
+        //     accessorKey: 'courses',
+        // },
         {
             header: '',
             id: 'action',

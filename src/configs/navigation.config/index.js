@@ -59,16 +59,16 @@ const navigationConfig = [
         type: NAV_ITEM_TYPE_COLLAPSE,
         authority: ['chairman'],
         subMenu: [
-            {
-                key: 'Genrate Schedule',
-                path: '/GenrateSchedule',
-                title: 'Genrate Schedule',
-                translateKey: 'GenrateSchedule',
-                icon: 'groupCollapseMenu',
-                type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [],
-                subMenu: [],
-            },
+            // {
+            //     key: 'Genrate Schedule',
+            //     path: '/GenrateSchedule',
+            //     title: 'Operations',
+            //     translateKey: 'GenrateSchedule',
+            //     icon: 'groupCollapseMenu',
+            //     type: NAV_ITEM_TYPE_COLLAPSE,
+            //     authority: [],
+            //     subMenu: [],
+            // },
             {
                 key: 'CompareSchedule',
                 path: '/compare-schedule',
@@ -88,16 +88,7 @@ const navigationConfig = [
                 authority: [],
                 subMenu: [],
             },
-            {
-                key: 'UpoadRefrenceSchedule',
-                path: '/UpoadRefrenceSchedule',
-                title: 'Upoad Refrence Schedule',
-                translateKey: 'UpoadRefrenceSchedule',
-                icon: 'groupCollapseMenu',
-                type: NAV_ITEM_TYPE_COLLAPSE,
-                authority: [],
-                subMenu: [],
-            },
+          
             {
                 key: 'ViewSuggestedCourses',
                 path: '/ViewSuggestedCourses',
