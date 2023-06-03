@@ -12,7 +12,7 @@ const navigationConfig = [
         translateKey: 'nav.home',
         icon: 'home',
         type: NAV_ITEM_TYPE_ITEM,
-        authority: ['student', 'chairman' , 'registerr'],
+        authority: ['student', 'chairman' , 'registerer'],
         subMenu: [],
     },
     
@@ -112,15 +112,15 @@ const navigationConfig = [
             },
         ],
     },
-    //Registerr
+    //registerer
     {
-        key: 'registerr',
+        key: 'registerer',
         path: '',
-        title: 'Registerr Menu',
+        title: 'registerer Menu',
         translateKey: 'nav.ChairmanMenu.ChairmanMenu',
         icon: 'collapseMenu',
         type: NAV_ITEM_TYPE_COLLAPSE,
-        authority: ['registerr'],
+        authority: ['registerer'],
         subMenu: [
             {
                 key: 'MangeColleges',

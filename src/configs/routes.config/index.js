@@ -8,7 +8,7 @@ export const protectedRoutes = [
         key: 'home',
         path: '/home',
         component: React.lazy(() => import('views/Home')),
-        authority: ['student', 'chairman' , 'registerr'],
+        authority: ['student', 'chairman' , 'registerer'],
     },
     // {
     //     key: 'home2',
@@ -97,28 +97,28 @@ export const protectedRoutes = [
         ),
         authority: [],
     },
-    //Registerr
+    //registerer
     {
         key: 'MangeColleges',
         path: '/MangeColleges',
         component: React.lazy(() =>
-            import('views/demo/Registerr/MangeColleges')
+            import('views/demo/registerer/MangeColleges')
         ),
-        authority: ['registerr'],
+        authority: ['registerer'],
     },
     {
         key: 'MangeDepartment',
         path: '/MangeDepartment',
         component: React.lazy(() =>
-            import('views/demo/Registerr/MangeDepartment')
+            import('views/demo/registerer/MangeDepartment')
         ),
-        authority: ['registerr'],
+        authority: ['registerer'],
     },
     {
         key: 'MangeDepartmentCourses',
         path: '/MangeDepartmentCourses',
         component: React.lazy(() =>
-            import('views/demo/Registerr/MangeDepartmentCourses')
+            import('views/demo/registerer/MangeDepartmentCourses')
         ),
         authority: [],
     },
@@ -126,7 +126,7 @@ export const protectedRoutes = [
         key: 'NotifyChairman',
         path: '/NotifyChairman',
         component: React.lazy(() =>
-            import('views/demo/Registerr/NotifyChairman')
+            import('views/demo/registerer/NotifyChairman')
         ),
         authority: [],
     },

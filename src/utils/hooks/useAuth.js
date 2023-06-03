@@ -6,7 +6,7 @@ import appConfig from 'configs/app.config'
 import { REDIRECT_URL_KEY } from 'constants/app.constant'
 import { useNavigate } from 'react-router-dom'
 import useQuery from './useQuery'
-
+import jwt from 'jwt-decode' // import dependency
 function useAuth() {
     const dispatch = useDispatch()
 
@@ -16,76 +16,28 @@ function useAuth() {
 
     const { token, signedIn } = useSelector((state) => state.auth.session)
 
-    const fetchUserDetail = async (user_id) => {
-       
-        try {
-            const response = await fetch(`/api/users/${user_id}`)
-            const user = await response.json()
-            dispatch(
-                setUser(
-                    {
-                        avatar: '',
-                        userName: `${user.fname} ${ user.mname} ${user.lname}`,
-                        authority: [user.roleName.toLowerCase()],
-                        email: '',
-                        department: user.departmentName,
-                    }
-                )
-            )
-        } catch (error) {
-            console.error('Error fetching departments:', error)
-        }
-    
-}
-
-    const signIn = async (values) => {
   
-       
+    const signIn = async (values) => {
         try {
             const resp = await apiSignIn(values)
 
             if (resp.data) {
-                const  token  = resp.data
+                const token = resp.data
+                const userdata = jwt(token) // decode your token here
+                
                 dispatch(onSignInSuccess(token))
-                if (resp.data) {
-                    const user = await fetchUserDetail(values.user_id)
-                   
-                }
-                const redirectUrl = query.get(REDIRECT_URL_KEY)
-                navigate(
-                    redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath
+                dispatch(
+                    setUser({
+                        avatar: '',
+                        userName: userdata.userName,
+                        authority: [userdata.authority.toLowerCase()],
+                        email: '',
+                        department: userdata.departmentName,
+                        departmentId: userdata.departmentId,
+                        userId:userdata.userId
+                    })
                 )
-                return {
-                    status: 'success',
-                    message: '',
-                }
-            }
-        } catch (errors) {
-            return {
-                status: 'failed',
-                message: errors?.response?.data?.message || errors.toString(),
-            }
-        }
-    }
 
-    const signUp = async (values) => {
-        try {
-            const resp = await apiSignUp(values)
-            if (resp.data) {
-                const { token } = resp.data
-                dispatch(onSignInSuccess(token))
-                if (resp.data.user) {
-                    dispatch(
-                        setUser(
-                            resp.data.user || {
-                                avatar: '',
-                                userName: 'Anonymous',
-                                authority: ['USER'],
-                                email: '',
-                            }
-                        )
-                    )
-                }
                 const redirectUrl = query.get(REDIRECT_URL_KEY)
                 navigate(
                     redirectUrl ? redirectUrl : appConfig.authenticatedEntryPath
@@ -117,7 +69,6 @@ function useAuth() {
     return {
         authenticated: token && signedIn,
         signIn,
-        signUp,
         signOut,
     }
 }

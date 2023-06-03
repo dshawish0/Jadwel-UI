@@ -5,7 +5,9 @@ export const initialState = {
     userName: '',
     email: '',
     authority: [],
-    department: ''
+    department: '',
+    departmentId: '',
+    userId: ''
 }
 
 export const userSlice = createSlice({
