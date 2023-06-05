@@ -4,29 +4,12 @@ import { COLORS } from 'constants/chart.constant'
 import React, { useState } from 'react'
 import {Dialog} from 'components/ui';
 import { DatePicker } from 'components/ui'
-
 import { Button } from 'components/ui'
 import { HiOutlineCog, HiOutlinePencil, HiOutlineInboxIn } from 'react-icons/hi'
+const { DatePickerRange } = DatePicker
+
 const GenrateSchedule = () => {
     const { DateTimepicker } = DatePicker
-
-    // const uniqueVisitorsData = {
-    //     series: [
-    //         {
-    //             name: 'Students want this course',
-    //             data: [45, 52, 38, 24, 33, 26, 21],
-    //         },
-    //     ],
-    //     categories: [
-    //         'Software Design ',
-    //         'Android',
-    //         'Software Decumintaion',
-    //         'Software Modeling',
-    //         'Software Testing',
-    //         'Client Server',
-    //         'Web Engineering',
-    //     ],
-    // }
     const [loading, setLoading] = useState(false)
 
     const onClick = () => {
@@ -49,15 +32,27 @@ const GenrateSchedule = () => {
 
     const data = [
         {
-            name: 'Hall 1',
+            name: 'All days',
             data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
         },
         {
-            name: 'Hall 2',
+            name: 'Sun  , teu , thr',
             data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
         },
         {
-            name: 'Hall 3',
+            name: 'mon , wed',
+            data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
+        },
+    ]
+    const data1 = [
+        {
+           
+            data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
+        },
+        {
+            data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
+        },
+        {
             data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
         },
     ]
@@ -72,18 +67,40 @@ const GenrateSchedule = () => {
         setIsOpen(false)
     }
 
-    const onDialogOk = (e) => {
-        console.log('onDialogOk', e)
-        setIsOpen(false)
-    }
-
+    const onDialogOk = async (selectedDateTime) => {
+        try {
+          setLoading(true);
+      
+          const { date, time } = selectedDateTime;
+          const requestData = {
+            date,
+            time,
+          };
+      
+          const response = await fetch('https://api.example.com/schedule', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(requestData),
+          });
+      
+          // Rest of the code...
+        } catch (error) {
+          console.error('Error:', error);
+        } finally {
+          setLoading(false);
+          setIsOpen(false);
+        }
+      };
+      
     return (
         <div>
             <div className="flex-wrap inline-flex xl:flex items-center gap-2">
             <Dialog isOpen={dialogIsOpen} closable={false}>
                 <h5 className="mb-4">Start Registration</h5>
               
-                <DateTimepicker placeholder="Pick date & time" />
+                <DatePickerRange placeholder="Select dates range" />
 
               
                 <div className="text-right mt-6">
@@ -145,8 +162,57 @@ const GenrateSchedule = () => {
                         'Documention',
                         'HCI',
                         'Security',
-                        'Data Strucutre',
-                        'Algorithims',
+                        'Data ',
+                   
+
+                  
+                 
+                    ],
+                },
+                fill: {
+                    opacity: 1,
+                },
+                tooltip: {
+                    y: {
+                        formatter: (val) => `${val} `,
+                    },
+                },
+            }}
+            series={data1}
+            height={300}
+            type="bar"
+        />
+            <Chart
+            options={{
+                plotOptions: {
+                    bar: {
+                        horizontal: false,
+                        columnWidth: '50%',
+                        endingShape: 'rounded',
+                    },
+                },
+                colors: COLORS,
+                dataLabels: {
+                    enabled: false,
+                },
+                stroke: {
+                    show: true,
+                    width: 2,
+                    colors: ['transparent'],
+                },
+                xaxis: {
+                    categories: [
+                        'Software Design  ',
+                        'Software Testing',
+                        'Client Server',
+                        'OOP',
+                        'Documention',
+                        'HCI',
+                        'Security',
+                        'Data ',
+                   
+
+                  
                  
                     ],
                 },
@@ -163,6 +229,7 @@ const GenrateSchedule = () => {
             height={300}
             type="bar"
         />
+        
           <Chart
             options={{
                 colors: COLORS,

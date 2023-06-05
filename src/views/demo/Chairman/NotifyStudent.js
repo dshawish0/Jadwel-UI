@@ -12,42 +12,43 @@ const NotifyStudent = () => {
     message: Yup.string().required('Message is required'),
   });
 
-  const handleSubmit = (values, { resetForm }) => {
+  const handleSubmit = async (values, { resetForm }) => {
     setSubmitting(true);
     setSubmitError(null);
 
-    fetch('/api/save-suggested-course', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(values),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Suggested course saved:', data);
-        setShowSuccessMessage(true);
-        resetForm();
-      })
-      .catch((error) => {
-        console.error('Error saving suggested course:', error);
-        setSubmitError('Failed to save suggested course. Please try again.');
-      })
-      .finally(() => {
-        setSubmitting(false);
+    try {
+      const response = await fetch('/api/save-suggested-course', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(values),
       });
+
+      const data = await response.json();
+      console.log('Suggested course saved:', data);
+      setShowSuccessMessage(true);
+      resetForm();
+    } catch (error) {
+      console.error('Error saving suggested course:', error);
+      setSubmitError('Failed to save suggested course. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
     <div>
       <div dir="ltr">
         <Alert showIcon style={{ margin: '0 auto 20px', textAlign: 'center' }}>
-        تذكير الطلاب بالاحداث المستجدة        </Alert>
+          تذكير الطلاب بالاحداث المستجدة
+        </Alert>
       </div>
       {showSuccessMessage && (
         <div>
           <Alert className="mb-4" type="success" showIcon>
-          تم ارسال الرسالة بنجاح        </Alert>
+            تم ارسال الرسالة بنجاح
+          </Alert>
         </div>
       )}
       <Formik

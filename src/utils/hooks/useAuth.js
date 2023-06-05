@@ -23,6 +23,7 @@ function useAuth() {
 
             if (resp.data) {
                 const token = resp.data
+                sessionStorage.setItem('token', token);
                 const userdata = jwt(token) // decode your token here
                 
                 dispatch(onSignInSuccess(token))

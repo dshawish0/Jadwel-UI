@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { DataTable } from 'components/shared';
-import { AdaptableCard } from 'components/shared'
-import { Button, Dialog, Table, Alert } from 'components/ui';
+import { AdaptableCard } from 'components/shared';
+import { Dialog, Table } from 'components/ui';
 import StudentsInfo from './StudentsInfo';
 
-const { Tr, Th, Td, THead, TBody } = Table;
+const { Td } = Table;
 
 const FullSchedule = () => {
-  
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const openDialog = (student) => {
     setSelectedStudent(student);
@@ -17,161 +18,82 @@ const FullSchedule = () => {
   const closeDialog = () => {
     setSelectedStudent(null);
   };
-  const [data, setData] = useState([
-    {
-      id: 1,
-      courseName: 'Software Design',
-      creditHours: 3,
-      days: 'Monday, Wednesday',
-      capacity: 30,
-    },
-    {
-      id: 2,
-      courseName: 'Security',
-      creditHours: 4,
-      days: 'Tuesday, Thursday',
-      capacity: 25,
-    },
-    {
-      id: 3,
-      courseName: 'Software Testing',
-      creditHours: 2,
-      days: 'Friday',
-      capacity: 20,
-    },
-  ]);
-  const [loading, setLoading] = useState(false);
-  const [tableData, setTableData] = useState({
-    total: 0,
-    pageIndex: 1,
-    pageSize: 20,
-    query: '',
-    sort: {
-      order: 'desc',
-      key: 'id',
-    },
-  });
-
-  const columns = [
-    {
-      header: 'Course Name',
-      accessorKey: 'courseName',//row.original.courseName
-      cell: ({ row }) => {
-        return (
-          <div class="grid grid-cols-1 gap-2">
-            <div>Course Name:	INTRODUCTION TO PARAMEDIC</div>
-            <div>Credit Hours:	2</div>
-         </div>
-        )
-      }
-    },
-    {
-     
-      accessorKey: 'Details',//row.original.courseName
-      cell: ({ row }) => {
-        return (
-          
-          <table class="table-auto border">
-          <thead>
-            <tr>
-              <th>Days</th>
-             
-              <th>Registers</th>
-              <th>schedules</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>Sunday , thr , thu </td>
-              <td>100</td>
-              <Td
-              style={{ cursor: 'pointer', textDecoration: 'underline' }}
-              onClick={() => openDialog('View')}
-            >
-              View
-            </Td>
-
-            </tr>
-            <tr>
-              <td>mon , wed</td> 
-              <td>200</td>
-              <td> <button>View</button></td>
-            </tr>
-            <tr>
-              <td>all days</td>
-              <td>300</td>
-              <td> <button>View</button></td>
-
-            </tr>
-          </tbody>
-        </table>
-        
-        )
-        }
-
-    },
-   
-    // {
-    //   header: 'Credit Hours',
-    //   accessorKey: 'creditHours',
-    // },
-    
-    // {
-    //   header: 'Days',
-    //   accessorKey: 'days',
-    // },
-    // {
-    //   header: 'Capacity',
-    //   enableSorting: false,
-    //   accessorKey: 'capacity',
-    // },
-  ];
-
-  const handlePaginationChange = (pageIndex) => {
-    setTableData((prevData) => ({ ...prevData, ...{ pageIndex } }));
-  };
-
-  const handleSelectChange = (pageSize) => {
-    setTableData((prevData) => ({ ...prevData, ...{ pageSize } }));
-  };
-
-  const handleSort = ({ order, key }) => {
-    setTableData((prevData) => ({
-      ...prevData,
-      ...{ sort: { order, key } },
-    }));
-  };
 
   useEffect(() => {
-    setLoading(true);
-    setData(data);
-    setLoading(false);
-    setTableData((prevData) => ({
-      ...prevData,
-      ...{ total: data.length },
-    }));
+    const fetchData = async () => {
+      setLoading(true);
+      try {
+        const response = await fetch('/api/courses'); // Replace with your API endpoint
+        const apiData = await response.json();
+        setData(apiData);
+      } catch (error) {
+        console.error(error);
+      }
+      setLoading(false);
+    };
+
+    fetchData();
   }, []);
 
   return (
     <AdaptableCard className="h-full" bodyClass="h-full">
       <div className="lg:flex items-center justify-between mb-4">
         <div className="flex items-center gap-4">
-          <h3 className="mb-4 lg:mb-0">Statistical semester schedule </h3>
+          <h3 className="mb-4 lg:mb-0">Statistical semester schedule</h3>
         </div>
       </div>
       <DataTable
-        columns={columns}
+        columns={[
+          {
+            header: 'Course Name',
+            accessorKey: 'courseName',
+            cell: ({ row }) => {
+              return (
+                <div className="grid grid-cols-1 gap-2">
+                  <div>Course Name: {row.original.name}</div>
+                  <div>Credit Hours: {row.original.credit_hours}</div>
+                </div>
+              );
+            },
+          },
+          {
+            accessorKey: 'Details',
+            cell: () => {
+              return (
+                <table className="table-auto border">
+                  <thead>
+                    <tr>
+                      <th>Days</th>
+                      <th>Registers</th>
+                      <th>Schedules</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.map((item) => (
+                      <tr key={item.id}>
+                        <td>{item.department_name}</td>
+                        <td>{item.course_id}</td>
+                        <Td
+                          style={{ cursor: 'pointer', textDecoration: 'underline' }}
+                          onClick={() => openDialog('View')}
+                        >
+                          View
+                        </Td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              );
+            },
+          },
+        ]}
         data={data}
         loading={loading}
-        pagingData={tableData}
-        onPaginationChange={handlePaginationChange}
-        onSelectChange={handleSelectChange}
-        onSort={handleSort}
       />
-        {/* Dialog */}
-        {selectedStudent && (
+      {/* Dialog */}
+      {selectedStudent && (
         <Dialog isOpen={!!selectedStudent} onClose={closeDialog}>
-          <StudentsInfo/>
+          <StudentsInfo />
         </Dialog>
       )}
     </AdaptableCard>

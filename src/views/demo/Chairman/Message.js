@@ -9,9 +9,14 @@ const Message = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('https://jsonplaceholder.typicode.com/posts');
+        const response = await fetch('/api/suggestedCourse/1/StudentMessages');
         const data = await response.json();
-        setMessages(data.slice(0, 5));
+        const simplifiedData = data.map((item) => ({
+          id: item.id,
+          name: item.name,
+          body: item.description,
+        }));
+        setMessages(simplifiedData.slice(0, 5));
       } catch (error) {
         console.error('Error fetching data:', error);
       }
@@ -38,7 +43,7 @@ const Message = () => {
       {messages.map((message) => (
         <div key={message.id} style={{ marginBottom: '10px' }}>
           <Button variant="solid" onClick={() => openDialog(message)}>
-            Open Message {message.id}
+            Open Message from {message.name}
           </Button>
         </div>
       ))}
@@ -46,7 +51,7 @@ const Message = () => {
       <Dialog isOpen={dialogIsOpen} onClose={onDialogClose}>
         {selectedMessage && (
           <div className="flex flex-col h-full justify-between">
-            <h5 className="mb-4">Student Message {selectedMessage.id}</h5>
+            <h5 className="mb-4">Student Message from {selectedMessage.name}</h5>
             <div className="max-h-96 overflow-y-auto">
               <p>{selectedMessage.body}</p>
             </div>
