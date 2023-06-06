@@ -30,7 +30,6 @@ const CompareSchedule = () => {
     }
 
     const onDialogClose = (e) => {
-        console.log('onDialogClose', e)
         setIsOpen(false)
     }
 
@@ -57,10 +56,7 @@ const CompareSchedule = () => {
         debounceFn(e.target.value)
     }
 
-    const handleAction = (cellProps) => {
-        alert('@todo Edit')
-        console.log('Action clicked', cellProps)
-    }
+  
     const handleDelete = async () => {
         setLoading(true)
         const success = await apiDeleteSchedule({ id: dialogItemId })
@@ -123,8 +119,6 @@ const CompareSchedule = () => {
     }
 
     const handleSort = ({ order, key }, aaa) => {
-        console.log({ order, key })
-        console.log(aaa)
         setTableData((prevData) => ({
             ...prevData,
             ...{ sort: { order, key } },
@@ -133,7 +127,6 @@ const CompareSchedule = () => {
     const fetchData = async () => {
         setLoading(true)
         const response = await axios.get('/api/courses' , tableData)
-        console.log('response')
         console.log(response)
         if (response.data) {
             setData(response.data)

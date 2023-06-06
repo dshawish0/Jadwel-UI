@@ -14,7 +14,6 @@ const { authenticatedEntryPath } = appConfig
 
 const AllRoutes = (props) => {
     const userAuthority = useSelector((state) => state.auth.user.authority)
- console.log(userAuthority)
     return (
         <Routes>
             <Route path="/" element={<ProtectedRoute />}>

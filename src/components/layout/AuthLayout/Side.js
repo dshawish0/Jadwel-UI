@@ -16,7 +16,6 @@ const Side = ({ children, content, ...rest }) => {
                 }}
             >
                 <Logo mode="dark" logoWidth={logoWidth} /> {/* Update logoWidth prop */}
-                                 <Notification/>
 
                 <div>
                     <div className="mb-6 flex items-center gap-4">

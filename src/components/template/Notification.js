@@ -10,13 +10,7 @@ import {
     Button,
     Tooltip,
 } from 'components/ui'
-import {
-    HiOutlineBell,
-    HiOutlineCalendar,
-    HiOutlineClipboardCheck,
-    HiOutlineBan,
-    HiOutlineMailOpen,
-} from 'react-icons/hi'
+import { HiOutlineBell, HiOutlineMailOpen } from 'react-icons/hi'
 import {
     apiGetNotificationList,
     apiGetNotificationCount,
@@ -28,6 +22,11 @@ import useThemeClass from 'utils/hooks/useThemeClass'
 import { useSelector } from 'react-redux'
 import useResponsive from 'utils/hooks/useResponsive'
 import acronym from 'utils/acronym'
+import {
+    HiOutlineCalendar,
+    HiOutlineClipboardCheck,
+    HiOutlineBan,
+} from 'react-icons/hi'
 
 const notificationHeight = 'h-72'
 const imagePath = '/img/avatars/'
@@ -99,6 +98,7 @@ export const Notification = ({ className }) => {
     const [unreadNotification, setUnreadNotification] = useState(false)
     const [noResult, setNoResult] = useState(false)
     const [loading, setLoading] = useState(false)
+    const [selectedMessage, setSelectedMessage] = useState(null)
 
     const { bgTheme } = useThemeClass()
 
@@ -158,6 +158,14 @@ export const Notification = ({ className }) => {
         [notificationList]
     )
 
+    const showMessage = useCallback((message) => {
+        setSelectedMessage(message)
+    }, [])
+
+    const hideMessage = useCallback(() => {
+        setSelectedMessage(null)
+    }, [])
+
     return (
         <Dropdown
             renderTitle={
@@ -195,7 +203,10 @@ export const Notification = ({ className }) => {
                                         ? 'border-b border-gray-200 dark:border-gray-600'
                                         : ''
                                 }`}
-                                onClick={() => onMarkAsRead(item.id)}
+                                onClick={() => {
+                                    onMarkAsRead(item.id)
+                                    showMessage(item)
+                                }}
                             >
                                 <div>{notificationTypeAvatar(item)}</div>
                                 <div className="ltr:ml-3 rtl:mr-3">
@@ -249,16 +260,19 @@ export const Notification = ({ className }) => {
                     )}
                 </ScrollBar>
             </div>
-            <Dropdown.Item variant="header">
-                <div className="flex justify-center border-t border-gray-200 dark:border-gray-600 px-4 py-2">
-                    <Link
-                        to="/src/views/Account/ActivityLog"
-                        className="font-semibold cursor-pointer p-2 px-3 text-gray-600 hover:text-gray-900 dark:text-gray-200 dark:hover:text-white"
-                    >
-                        View All Activity
-                    </Link>
+
+            {selectedMessage && (
+                <div
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60"
+                    onClick={hideMessage}
+                >
+                     <div className="bg-white p-8 max-w-full h-full fixed top-0 left-0 right-0 bottom-0 flex flex-col justify-start items-start">
+      <h3 className="text-lg font-semibold mb-4">Description</h3>
+      <div className="border-t-2 border-gray-300 w-64"></div>
+      <p className="text-base mt-4">{selectedMessage.message}</p>
+    </div>
                 </div>
-            </Dropdown.Item>
+            )}
         </Dropdown>
     )
 }

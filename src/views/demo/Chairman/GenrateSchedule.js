@@ -63,7 +63,6 @@ const GenrateSchedule = () => {
     }
 
     const onDialogClose = (e) => {
-        console.log('onDialogClose', e)
         setIsOpen(false)
     }
 
