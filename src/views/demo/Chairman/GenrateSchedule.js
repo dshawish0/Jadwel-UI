@@ -199,6 +199,7 @@ const GenrateSchedule = () => {
                     width: 2,
                     colors: ['transparent'],
                 },
+                
                 xaxis: {
                     categories: [
                         'Software Design  ',

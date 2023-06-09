@@ -31,52 +31,13 @@ import {
 const notificationHeight = 'h-72'
 const imagePath = '/img/avatars/'
 
-const GeneratedAvatar = ({ target }) => {
+const GeneratedAvatar = ({ full_name }) => {
     const color = useTwColorByName()
     return (
-        <Avatar shape="circle" className={`${color(target)}`}>
-            {acronym(target)}
+        <Avatar shape="circle" className={`${color(full_name)}`}>
+            {acronym(full_name)}
         </Avatar>
     )
-}
-
-const notificationTypeAvatar = (data) => {
-    const { type, target, image, status } = data
-    switch (type) {
-        case 0:
-            if (image) {
-                return <Avatar shape="circle" src={`${imagePath}${image}`} />
-            } else {
-                return <GeneratedAvatar target={target} />
-            }
-        case 1:
-            return (
-                <Avatar
-                    shape="circle"
-                    className="bg-blue-100 text-blue-600 dark:bg-blue-500/20 dark:text-blue-100"
-                    icon={<HiOutlineCalendar />}
-                />
-            )
-        case 2:
-            const statusSucceed = status === 'succeed'
-            const statusColor = statusSucceed
-                ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-100'
-                : 'bg-red-100 text-red-600 dark:bg-red-500/20 dark:text-red-100'
-            const statusIcon = statusSucceed ? (
-                <HiOutlineClipboardCheck />
-            ) : (
-                <HiOutlineBan />
-            )
-            return (
-                <Avatar
-                    shape="circle"
-                    className={statusColor}
-                    icon={statusIcon}
-                />
-            )
-        default:
-            return <Avatar />
-    }
 }
 
 const NotificationToggle = ({ className, dot }) => {
@@ -114,7 +75,7 @@ export const Notification = ({ className }) => {
         } else {
             setNoResult(true)
         }
-    }, [setUnreadNotification])
+    }, [])
 
     useEffect(() => {
         getNotificationCount()
@@ -127,7 +88,7 @@ export const Notification = ({ className }) => {
             setLoading(false)
             setNotificationList(resp.data)
         }
-    }, [notificationList, setLoading])
+    }, [notificationList])
 
     const onMarkAllAsRead = useCallback(() => {
         const list = notificationList.map((item) => {
@@ -149,7 +110,7 @@ export const Notification = ({ className }) => {
                 return item
             })
             setNotificationList(list)
-            const hasUnread = notificationList.some((item) => !item.readed)
+            const hasUnread = list.some((item) => !item.readed)
 
             if (!hasUnread) {
                 setUnreadNotification(false)
@@ -208,17 +169,18 @@ export const Notification = ({ className }) => {
                                     showMessage(item)
                                 }}
                             >
-                                <div>{notificationTypeAvatar(item)}</div>
                                 <div className="ltr:ml-3 rtl:mr-3">
                                     <div>
-                                        {item.target && (
+                                        {item.full_name && (
                                             <span className="font-semibold heading-text">
-                                                {item.target}{' '}
+                                                {item.full_name}{' '}
                                             </span>
                                         )}
-                                        <span>{item.description}</span>
+                                        <span>{item.title}</span>
                                     </div>
-                                    <span className="text-xs">{item.date}</span>
+                                    <span className="text-xs">
+                                        {item.publish_date}
+                                    </span>
                                 </div>
                                 <Badge
                                     className="absolute top-4 ltr:right-4 rtl:left-4 mt-1.5"
@@ -266,11 +228,15 @@ export const Notification = ({ className }) => {
                     className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-60"
                     onClick={hideMessage}
                 >
-                     <div className="bg-white p-8 max-w-full h-full fixed top-0 left-0 right-0 bottom-0 flex flex-col justify-start items-start">
-      <h3 className="text-lg font-semibold mb-4">Description</h3>
-      <div className="border-t-2 border-gray-300 w-64"></div>
-      <p className="text-base mt-4">{selectedMessage.message}</p>
-    </div>
+                    <div className="bg-white p-8 max-w-full h-full fixed top-0 left-0 right-0 bottom-0 flex flex-col justify-start items-start">
+                        <h3 className="text-lg font-semibold mb-4">
+                            {selectedMessage.title}
+                        </h3>
+                        <div className="border-t-2 border-gray-300"></div>
+                        <p style={{ wordBreak: 'break-word' }}>
+                            {selectedMessage.message}
+                        </p>
+                    </div>
                 </div>
             )}
         </Dropdown>

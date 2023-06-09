@@ -2,7 +2,7 @@ import React from 'react';
 import Welcome from './pages/Welcome';
 import GenrateSchedule from './demo/Chairman/GenrateSchedule';
 import { useSelector } from 'react-redux';
-
+import Calendar from './Calendar';
 
 const Home = () => {
   const userAuthority = useSelector((state) => state.auth.user.authority)
@@ -16,7 +16,7 @@ const Home = () => {
       case 'chairman':
         return  <GenrateSchedule/>
       case 'registerer':
-        return <div>Rendered content for case 3</div>;
+        return <div><Calendar/></div>;
       default:
         return <div>Invalid user autherity</div>;
     }

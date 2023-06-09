@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Button, FormItem, FormContainer, Alert } from 'components/ui';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 import * as Yup from 'yup';
+import jwt from 'jwt-decode';
 
 const NotifyStudent = () => {
   const [submitting, setSubmitting] = useState(false);
@@ -9,6 +10,7 @@ const NotifyStudent = () => {
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const validationSchema = Yup.object().shape({
+    title: Yup.string().required('Title is required'),
     message: Yup.string().required('Message is required'),
   });
 
@@ -16,22 +18,32 @@ const NotifyStudent = () => {
     setSubmitting(true);
     setSubmitError(null);
 
+    const currentDate = new Date().toISOString().split('T')[0];
+
     try {
-      const response = await fetch('/api/save-suggested-course', {
+      const token = sessionStorage.getItem('token');
+      const decodedToken = jwt(token);
+      const user_id = decodedToken.userId;
+      const response = await fetch('/api/notifyMessage', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(values),
+        body: JSON.stringify({
+          title: values.title,
+          message: values.message,
+          publish_date: currentDate,
+          user_id: user_id,
+        }),
       });
 
       const data = await response.json();
-      console.log('Suggested course saved:', data);
+      console.log('Message sent:', data);
       setShowSuccessMessage(true);
       resetForm();
     } catch (error) {
-      console.error('Error saving suggested course:', error);
-      setSubmitError('Failed to save suggested course. Please try again.');
+      console.error('Error sending message:', error);
+      setSubmitError('Failed to send message. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -54,6 +66,7 @@ const NotifyStudent = () => {
       <Formik
         enableReinitialize
         initialValues={{
+          title: '',
           message: '',
         }}
         validationSchema={validationSchema}
@@ -62,6 +75,25 @@ const NotifyStudent = () => {
         {({ values, errors, resetForm, setFieldValue }) => (
           <Form>
             <FormContainer>
+              <FormItem label="Title:">
+                <input
+                  type="text"
+                  name="title"
+                  value={values.title}
+                  onChange={(e) => setFieldValue('title', e.target.value)}
+                  style={{
+                    width: '100%',
+                    padding: '10px',
+                    boxSizing: 'border-box',
+                    borderRadius: '10px',
+                    border: '1px solid #ccc',
+                  }}
+                />
+                {errors.title && (
+                  <div style={{ color: 'red' }}>{errors.title}</div>
+                )}
+              </FormItem>
+
               <FormItem label="Message:">
                 <textarea
                   style={{

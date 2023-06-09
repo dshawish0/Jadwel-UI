@@ -15,6 +15,7 @@ const UploadOfferCourses = () => {
                 const response = await fetch(
                     `/api/courses/${userdata.departmentId}`
                 )
+
                 const data = await response.json()
                 setCourses(data)
             } catch (error) {
@@ -24,7 +25,7 @@ const UploadOfferCourses = () => {
 
         const fetchButtonState = async () => {
             try {
-                const response = await fetch('/api/courses/')
+                const response = await fetch('/api/courses')
                 const data = await response.json()
                 setButtonState(data.state)
             } catch (error) {
@@ -37,9 +38,8 @@ const UploadOfferCourses = () => {
     }, [])
 
     const handleButtonToggle = async (param) => {
-      
         try {
-            console.log("test")
+            console.log('test')
             const response = await fetch(`/api/courses/${param}/status`, {
                 method: 'PUT',
                 headers: {
@@ -85,7 +85,6 @@ const UploadOfferCourses = () => {
                     ))}
                 </TBody>
             </Table>
-            {/* <p>Button State: {buttonState ? 'On' : 'Off'}</p> */}
         </div>
     )
 }

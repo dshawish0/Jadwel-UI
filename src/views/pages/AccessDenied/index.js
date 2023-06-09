@@ -6,14 +6,14 @@ const AccessDenied = () => {
         <Container className="h-full">
             <div className="h-full flex flex-col items-center justify-center">
                 <DoubleSidedImage
-                    src="/img/others/img-2.png"
-                    darkModeSrc="/img/others/img-2-dark.png"
+                    src="/img/others/op.png"
+                    darkModeSrc="/img/others/welcome.png"
                     alt="Access Denied!"
                 />
                 <div className="mt-6 text-center">
-                    <h3 className="mb-2">Access Denied!</h3>
+                    <h3 className="mb-2">التسجيل مغلق</h3>
                     <p className="text-base">
-                        You have no permission to visit this page
+                        !لا يمكنك اقتراح مساق خارج فتره التسجيل
                     </p>
                 </div>
             </div>

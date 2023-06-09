@@ -18,7 +18,7 @@ const navigationConfig = [
     
 
     /** Example purpose only, please remove */
-
+   
     //Student
     {
         key: 'Sceduales',

@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Select, FormItem, FormContainer, Alert } from 'components/ui';
 import { Field, Form, Formik } from 'formik';
 import CreatableSelect from 'react-select/creatable';
 import * as Yup from 'yup';
 import jwt from 'jwt-decode';
+import { useNavigate } from 'react-router-dom';
+import AccessDenied from '../../pages/AccessDenied/index';
 
 const validationSchema = Yup.object().shape({
   course_id: Yup.string().required('Course is required'),
@@ -15,8 +17,11 @@ const SuggestedCourse = () => {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
   const [dataSent, setDataSent] = useState(false);
+  const [registrationDate, setRegistrationDate] = useState(null);
+  const [isRegistrationActive, setIsRegistrationActive] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+  const navigate = useNavigate();
 
-  
   useEffect(() => {
     const token = sessionStorage.getItem('token');
     const decodedToken = jwt(token);
@@ -26,11 +31,35 @@ const SuggestedCourse = () => {
       .then((data) => {
         const activeCourses = data.filter((course) => !course.is_active);
         setCourses(activeCourses);
+        setIsLoading(false);
       })
       .catch((error) => {
         console.error('Error fetching courses:', error);
+        setIsLoading(false);
       });
   }, []);
+
+  useEffect(() => {
+    const fetchRegistrationDate = async () => {
+      try {
+        const response = await fetch('/api/date');
+        const data = await response.json();
+        setRegistrationDate(data);
+        setIsRegistrationActive(
+          isWithinRegistrationPeriod(data.startRegister, data.endRegister)
+        );
+      } catch (error) {
+        console.error('Error fetching registration date:', error);
+      }
+    };
+
+    fetchRegistrationDate();
+  }, []);
+
+  const isWithinRegistrationPeriod = (startDate, endDate) => {
+    const currentDate = new Date().toISOString().split('T')[0];
+    return currentDate >= startDate && currentDate <= endDate;
+  };
 
   const handleSubmit = async (values, { resetForm }) => {
     setSubmitting(true);
@@ -68,6 +97,14 @@ const SuggestedCourse = () => {
       setSubmitting(false);
     }
   };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (!isRegistrationActive) {
+    return <AccessDenied />;
+  }
 
   return (
     <div>

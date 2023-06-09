@@ -4,6 +4,7 @@ import { Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 import { HiPlusCircle } from 'react-icons/hi';
 import jwt from 'jwt-decode';
+import { windowScroll } from '@tanstack/react-virtual';
 
 const daysOptions = [
   { value: 'Sunday - Tuesday - Thursday', label: 'Sunday - Tuesday - Thursday' },
@@ -65,12 +66,17 @@ const CreatableSelect = () => {
 
   const fetchCourses = async (department_id) => {
     try {
-      const response = await fetch(`/api/courses/${department_id}`);
+      const token = sessionStorage.getItem('token');
+      const decodedToken = jwt(token);
+      const userId = decodedToken.userId;
+      const response = await fetch(`/api/courses/${userId}/${department_id}`);
       const data = await response.json();
-      const options = data.map((course) => ({
-        value: course.course_id,
-        label: course.name
-      }));
+        const options = data
+    .filter((course) => course.is_active!== 0)
+    .map((course) => ({
+      value: course.course_id,
+      label: course.name
+    }));
       setCourseOptions(options);
     } catch (error) {
       console.error('Error fetching courses:', error);
@@ -78,35 +84,40 @@ const CreatableSelect = () => {
   };
 
   const handleSubmit = async (values) => {
-    const token = sessionStorage.getItem('token');
-    const decodedToken = jwt(token);
-    const userId = decodedToken.userId;
+  const token = sessionStorage.getItem('token');
+  const decodedToken = jwt(token);
+  const userId = decodedToken.userId;
 
-    const { days, college, departments, courses } = values;
-    const user_id = userId; // Assuming a static user ID for now
-    const course_id = courses.value;
-    const daysValue = days.some((day) => day.value === 'all') ? 'All days' : days.map((day) => day.value).join(', ');
+  const { days, college, departments, courses } = values;
+  const user_id = userId; // Assuming a static user ID for now
+  const course_id = courses.value;
+  const department_id =departments.value;
+  const daysValue = days.some((day) => day.value === 'all') ? 'All days' : days.map((day) => day.value).join(', ');
 
-    const postData = {
-      user_id,
-      course_id,
-      days: daysValue
-    };
-    try {
-      const response = await fetch('/api/suggestedStudentSchedule', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(postData)
-      });
-      
-      onDialogClose();
+  const postData = {
+    user_id,
+    department_id,
+    course_id,
     
-    } catch (error) {
-      console.error('Error making the POST request:', error);
-    }
+    days: daysValue
   };
+ console.log(department_id)
+  try {
+    const response = await fetch('/api/suggestedStudentSchedule', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(postData)
+    });
+
+    onDialogClose();
+    window.location.reload(); // Reload the page after closing the dialog
+
+  } catch (error) {
+    console.error('Error making the POST request:', error);
+  }
+};
 
   return (
     <>

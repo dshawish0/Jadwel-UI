@@ -1,4 +1,5 @@
 import ApiService from './ApiService'
+import jwt from 'jwt-decode'
 
 export async function apiGetNotificationCount() {
     return new Promise((resolve, reject) => {
@@ -10,33 +11,18 @@ export async function apiGetNotificationCount() {
   }
   
   export async function apiGetNotificationList() {
-    return new Promise((resolve, reject) => {
-      setTimeout(() => {
-        const notifications = [
-          {
-            id: 1,
-            type: 0,
-            target: 'Mohammad kanaan',
-            description: 'You have a new notification.',
-            readed: false,
-            message: 'Good morning mohammad tody you need to visit me on the office regards!'
-          },
-          {
-            id: 1,
-            type: 0,
-            target: 'Deiaa',
-            description: 'You have a new notification.',
-            readed: false,
-            message: 'Good morning mohammad tody you need to visit me on the office regards!'
-          },
-          // Add more fake notifications as needed
-        ];
-  
-        resolve({ data: notifications });
-      }, 2000); // Simulate a 2-second delay
-    });
+    try {
+      const token = sessionStorage.getItem('token')
+      const decodedToken = jwt(token)
+      const userId = decodedToken.userId
+      const response = await fetch(`/api/notifyMessage/${userId}`);
+      const data = await response.json();
+      // Assume the API returns an array of notifications in the "data" field
+      return { data };
+    } catch (error) {
+      throw new Error('Failed to fetch notification list.');
+    }
   }
-
 export async function apiGetSearchResult(data) {
     return ApiService.fetchData({
         url: '/search/query',
