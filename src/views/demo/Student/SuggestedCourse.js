@@ -42,7 +42,10 @@ const SuggestedCourse = () => {
   useEffect(() => {
     const fetchRegistrationDate = async () => {
       try {
-        const response = await fetch('/api/date');
+        const token = sessionStorage.getItem('token')
+        const decodedToken = jwt(token)
+        const departmentId = decodedToken.departmentId
+        const response = await fetch(`/api/date/${departmentId}`);
         const data = await response.json();
         setRegistrationDate(data);
         setIsRegistrationActive(

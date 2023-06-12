@@ -24,8 +24,8 @@ const Message = () => {
 
     fetchData();
   }, []);
-
-  const openDialog = (message) => {
+                
+    const openDialog = (message) => {
     setSelectedMessage(message);
     setIsOpen(true);
   };

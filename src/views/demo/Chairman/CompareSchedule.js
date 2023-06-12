@@ -10,6 +10,7 @@ import { HiPencilAlt, HiTrash } from 'react-icons/hi'
 const CompareSchedule = () => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
+    const[name , Setname] = useState('')
     const [tableData, setTableData] = useState({
         total: 0,
         pageIndex: 1,
@@ -21,113 +22,43 @@ const CompareSchedule = () => {
         },
     })
 
-    const [dialogItemId, setDialogItemId] = useState(false)
-    const [dialogIsOpen, setIsOpen] = useState(false)
+   
 
-    const openDialog = (props) => {
-        setDialogItemId(props.row.original.id)
-        setIsOpen(true)
-    }
+   
 
-    const onDialogClose = (e) => {
-        setIsOpen(false)
-    }
-
-    const onDialogOk = (e) => {
-        handleDelete()
-        setDialogItemId(false)
-        setIsOpen(false)
-    }
-
-    const inputRef = useRef()
-
-    const debounceFn = debounce(handleDebounceFn, 500)
-
-    function handleDebounceFn(val) {
-        if (typeof val === 'string' && (val.length > 1 || val.length === 0)) {
-            setTableData((prevData) => ({
-                ...prevData,
-                ...{ query: val, pageIndex: 1 },
-            }))
-        }
-    }
-
-    const handleChange = (e) => {
-        debounceFn(e.target.value)
-    }
-
-  
-    const handleDelete = async () => {
-        setLoading(true)
-        const success = await apiDeleteSchedule({ id: dialogItemId })
-        if (success) {
-            const filteredData = data.filter((item) => item.id !== dialogItemId)
-            setData(filteredData)
-            popNotification('deleted')
-        }
-        setLoading(false)
-    }
-
-    const popNotification = (keyword) => {
-        toast.push(
-            <Notification
-                title={`Successfuly ${keyword}`}
-                type="success"
-                duration={2500}
-            >
-                Schedule successfuly {keyword}
-            </Notification>,
-            {
-                placement: 'top-center',
-            }
-        )
-        //  navigate('/ViewSchedule')
-    }
-
+ 
+    
     const columns = [
         {
-            header: 'Course name',
-            accessorKey: 'name',
+            header: 'Student Name',
+            accessorKey: 'user_name',
         },
-        // {
-        //     header: 'days',
-        //     accessorKey: 'day',
-        // },
-        // {
-        //     header: 'college',
-        //     enableSorting: false,
-        //     accessorKey: 'college',
-        // },
+        {
+            header: 'Course name',
+            accessorKey: 'course_name',
+        },
         {
             header: 'departments',  
             accessorKey: 'department_name',
         },
-        // {
-        //     header: 'courses',
-        //     enableSorting: false,
-        //     accessorKey: 'courses',
-        // },
+        {
+            header: 'Days',
+            accessorKey: 'days',
+        },
+        
+       
     
     ]
 
-    const handlePaginationChange = (pageIndex) => {
-        setTableData((prevData) => ({ ...prevData, ...{ pageIndex } }))
-    }
-
-    const handleSelectChange = (pageSize) => {
-        setTableData((prevData) => ({ ...prevData, ...{ pageSize } }))
-    }
-
-    const handleSort = ({ order, key }, aaa) => {
-        setTableData((prevData) => ({
-            ...prevData,
-            ...{ sort: { order, key } },
-        }))
-    }
     const fetchData = async () => {
         setLoading(true)
-        const response = await axios.get('/api/courses' , tableData)
-        console.log(response)
+           const stdId = sessionStorage.getItem('StudentIdContext')
+
+        const response = await axios.get(`/api/suggestedStudentSchedule/${stdId}` , tableData)
+        // const data= response.json();
+        // Setname(data.user_name);
+        // console.log(data.user_name)
+        // console.log(response)
         if (response.data) {
             setData(response.data)
             setLoading(false)
@@ -140,7 +71,6 @@ const CompareSchedule = () => {
 
     useEffect(() => {
         fetchData()
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [
         tableData.pageIndex,
         tableData.sort,
@@ -152,6 +82,8 @@ const CompareSchedule = () => {
         <AdaptableCard className="h-full" bodyClass="h-full">
             <div className="lg:flex items-center justify-between mb-4">
                 <h1>Student Schedule</h1>
+                
+
 
               
             </div>

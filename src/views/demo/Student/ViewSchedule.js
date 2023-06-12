@@ -117,7 +117,10 @@ const ViewSchedule = () => {
   useEffect(() => {
     const fetchRegistrationDate = async () => {
       try {
-        const response = await axios.get('/api/date');
+        const token = sessionStorage.getItem('token')
+        const decodedToken = jwt(token)
+        const departmentId = decodedToken.departmentId
+        const response = await fetch(`/api/date/${departmentId}`);
         setRegistrationDate(response.data);
 
         const currentDate = new Date().toISOString().split('T')[0];

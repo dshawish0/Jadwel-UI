@@ -98,7 +98,6 @@ const CreatableSelect = () => {
     user_id,
     department_id,
     course_id,
-    
     days: daysValue
   };
  console.log(department_id)

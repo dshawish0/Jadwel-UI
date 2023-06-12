@@ -246,22 +246,13 @@ const ManageDepartment = () => {
             value={editedDepartmentName}
             onChange={(e) => setEditedDepartmentName(e.target.value)}
           />
-          <Input
-            label="Department ID"
-            value={editedDepartmentId}
-            onChange={(e) => setEditedDepartmentId(e.target.value)}
-          />
-          <Input
-            label="College Name"
-            value={editedCollegeName}
-            onChange={(e) => setEditedCollegeName(e.target.value)}
-          />
-          <Input
-            label="College ID"
-            value={editedCollegeId}
-            onChange={(e) => setEditedCollegeId(e.target.value)}
-          />
-          <div className="text-right mt-6">
+           <Select
+              label="College Name"
+              options={collegeOptions}
+              value={newCollegeName}
+              onChange={(selectedOption) => setNewCollegeName(selectedOption.value)}
+            />
+           <div className="text-right mt-6">
             <Button className="ltr:mr-2 rtl:ml-2" variant="plain" onClick={closeDialogs}>
               Cancel
             </Button>
@@ -277,6 +268,7 @@ const ManageDepartment = () => {
             label="Department Name"
             value={newDepartmentName}
             onChange={(e) => setNewDepartmentName(e.target.value)}
+            placeHolder ="department name"
           />
               <Select
               label="College Name"

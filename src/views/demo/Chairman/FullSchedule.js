@@ -1,103 +1,120 @@
-import React, { useState, useEffect } from 'react';
-import { DataTable } from 'components/shared';
-import { AdaptableCard } from 'components/shared';
-import { Dialog, Table } from 'components/ui';
-import StudentsInfo from './StudentsInfo';
-
-const { Td } = Table;
-
+import React, { useState, useEffect } from 'react'
+import { DataTable } from 'components/shared'
+import StudentsInfo from './StudentsInfo'
+import { Dialog } from 'components/ui'
+import { CgEnter } from 'react-icons/cg'
+import jwt from 'jwt-decode'
 const FullSchedule = () => {
-  const [selectedStudent, setSelectedStudent] = useState(null);
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(false);
+    const [selectedStudent, setSelectedStudent] = useState(null)
+    const [data, setData] = useState([])
+    const [loading, setLoading] = useState(false)
 
-  const openDialog = (student) => {
-    setSelectedStudent(student);
-  };
+    const openDialog = (stats) => {
+        setSelectedStudent(stats)
+    }
 
-  const closeDialog = () => {
-    setSelectedStudent(null);
-  };
+    const closeDialog = () => {
+        setSelectedStudent(null)
+    }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch('/api/courses'); // Replace with your API endpoint
-        const apiData = await response.json();
-        setData(apiData);
-      } catch (error) {
-        console.error(error);
-      }
-      setLoading(false);
-    };
+    useEffect(() => {
+        const fetchData = async () => {
+            setLoading(true)
+            try {
+                const token = sessionStorage.getItem('token')
+                const decodedToken = jwt(token)
+                const departmentId = decodedToken.departmentId
+                const response = await fetch(
+                    `/api/suggestedStudentSchedule/${departmentId}/statistics`
+                )
+                const apiData = await response.json()
+                setData(apiData)
+            } catch (error) {
+                console.error(error)
+            }
+            setLoading(false)
+        }
 
-    fetchData();
-  }, []);
+        fetchData()
+    }, [])
 
-  return (
-    <AdaptableCard className="h-full" bodyClass="h-full">
-      <div className="lg:flex items-center justify-between mb-4">
-        <div className="flex items-center gap-4">
-          <h3 className="mb-4 lg:mb-0">Statistical semester schedule</h3>
-        </div>
-      </div>
-      <DataTable
-        columns={[
-          {
+    const columns = [
+        {
+            id: 'course',
             header: 'Course Name',
-            accessorKey: 'courseName',
-            cell: ({ row }) => {
-              return (
+            cell: ({ row }) => (
                 <div className="grid grid-cols-1 gap-2">
-                  <div>Course Name: {row.original.name}</div>
-                  <div>Credit Hours: {row.original.credit_hours}</div>
+                    <div>Course Name: {row.original.course.name}</div>
+                    <div>Credit Hours: {row.original.course.credit_hours}</div>
                 </div>
-              );
-            },
-          },
-          {
-            accessorKey: 'Details',
-            cell: () => {
-              return (
+            ),
+        },
+        {
+            id: 'schedule',
+            header: 'Schedule',
+            cell: ({ row }) => (
                 <table className="table-auto border">
-                  <thead>
-                    <tr>
-                      <th>Days</th>
-                      <th>Registers</th>
-                      <th>Schedules</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {data.map((item) => (
-                      <tr key={item.id}>
-                        <td>{item.department_name}</td>
-                        <td>{item.course_id}</td>
-                        <Td
-                          style={{ cursor: 'pointer', textDecoration: 'underline' }}
-                          onClick={() => openDialog('View')}
-                        >
-                          View
-                        </Td>
-                      </tr>
-                    ))}
-                  </tbody>
+                    <thead>
+                        <tr>
+                            <th>Days</th>
+                            <th>Student Count</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {Object.entries(row.original.scheduleStatistics).map(
+                            ([day, stats]) => (
+                                <tr key={day}>
+                                    <td style={{ width: 300 }}>{day}</td>
+                                    <td style={{ textAlign: 'center' }}>
+                                        {' '}
+                                        {stats.student_count}
+                                    </td>
+                                    <td
+                                        style={{
+                                            cursor: 'pointer',
+                                            textDecoration: 'underline',
+                                        }}
+                                        onClick={() => openDialog(stats)}
+                                    >
+                                        View
+                                    </td>
+                                </tr>
+                            )
+                        )}
+                    </tbody>
                 </table>
-              );
-            },
-          },
-        ]}
-        data={data}
-        loading={loading}
-      />
-      {/* Dialog */}
-      {selectedStudent && (
-        <Dialog isOpen={!!selectedStudent} onClose={closeDialog}>
-          <StudentsInfo />
-        </Dialog>
-      )}
-    </AdaptableCard>
-  );
-};
+            ),
+        },
+    ]
 
-export default FullSchedule;
+    return (
+        <>
+            <DataTable
+                columns={columns}
+                data={data}
+                loading={loading}
+                onCheckBoxChange={() => {}}
+                onIndeterminateCheckBoxChange={() => {}}
+                onPaginationChange={() => {}}
+                onSelectChange={() => {}}
+                onSort={() => {}}
+                pageSizes={[10, 25, 50, 100]}
+                selectable={false}
+                pagingData={{
+                    total: data.length,
+                    pageIndex: 1,
+                    pageSize: 10,
+                }}
+            />
+
+            {selectedStudent && (
+                <Dialog isOpen={!!selectedStudent} onClose={closeDialog}>
+                    <StudentsInfo stats={selectedStudent} />
+                </Dialog>
+            )}
+        </>
+    )
+}
+
+export default FullSchedule
