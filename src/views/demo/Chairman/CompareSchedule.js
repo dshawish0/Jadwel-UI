@@ -10,7 +10,9 @@ import { HiPencilAlt, HiTrash } from 'react-icons/hi'
 const CompareSchedule = () => {
     const [data, setData] = useState([])
     const [loading, setLoading] = useState(false)
-    const[name , Setname] = useState('')
+    const [name, Setname] = useState('')
+    const [studentName, setStudentName] = useState('')
+
     const [tableData, setTableData] = useState({
         total: 0,
         pageIndex: 1,
@@ -22,45 +24,33 @@ const CompareSchedule = () => {
         },
     })
 
-   
-
-   
-
- 
-    
     const columns = [
-        {
-            header: 'Student Name',
-            accessorKey: 'user_name',
-        },
         {
             header: 'Course name',
             accessorKey: 'course_name',
         },
         {
-            header: 'departments',  
+            header: 'departments',
             accessorKey: 'department_name',
         },
         {
             header: 'Days',
             accessorKey: 'days',
         },
-        
-       
-    
     ]
 
     const fetchData = async () => {
         setLoading(true)
-           const stdId = sessionStorage.getItem('StudentIdContext')
+        const stdId = sessionStorage.getItem('StudentIdContext')
 
-        const response = await axios.get(`/api/suggestedStudentSchedule/${stdId}` , tableData)
-        // const data= response.json();
-        // Setname(data.user_name);
-        // console.log(data.user_name)
-        // console.log(response)
-        if (response.data) {
+        const response = await axios.get(
+            `/api/suggestedStudentSchedule/${stdId}`,
+            tableData
+        )
+
+        if (response.data && response.data.length > 0) {
             setData(response.data)
+            setStudentName(response.data[0].user_name) // Assuming 'user_name' is the student name
             setLoading(false)
             setTableData((prevData) => ({
                 ...prevData,
@@ -81,19 +71,21 @@ const CompareSchedule = () => {
     return (
         <AdaptableCard className="h-full" bodyClass="h-full">
             <div className="lg:flex items-center justify-between mb-4">
-                <h1>Student Schedule</h1>
-                
-
-
-              
+                <h1
+                    style={{
+                        color: '#3c4146',
+                        fontSize: '2rem',
+                        fontWeight: 600,
+                        marginBottom: '2rem',
+                        borderBottom: '2px solid #3c4146',
+                        paddingBottom: '0.5rem',
+                        display: 'inline-block',
+                    }}
+                >
+                    {studentName}
+                </h1>
             </div>
-            <DataTable
-                columns={columns}
-                data={data}
-                loading={loading}
-               
-            />
-         
+            <DataTable columns={columns} data={data} loading={loading} />
         </AdaptableCard>
     )
 }

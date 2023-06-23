@@ -1,6 +1,5 @@
 import { Chart } from 'components/shared'
 import { useNavigate } from 'react-router-dom'
-import { COLORS } from 'constants/chart.constant'
 import React, { useState , useEffect } from 'react'
 import { Dialog } from 'components/ui'
 import { DatePicker } from 'components/ui'
@@ -8,36 +7,45 @@ import { Button } from 'components/ui'
 import jwt from 'jwt-decode'
 import { HiOutlineInboxIn } from 'react-icons/hi'
 import axios from 'axios'
+
 const { DatePickerRange } = DatePicker
+
+const COLORS = ['#008FFB', '#00E396', '#FEB019', '#FF4560', '#775DD0', '#3F51B5', '#546E7A', '#D4526E', '#8D5B4C', '#F86624', '#D7263D', '#1B998B', '#2E294E', '#F46036', '#E2C044'];
 
 const GenrateSchedule = () => {
     const { DateTimepicker } = DatePicker
+    const [pieColors, setPieColors] = useState([]);
+
     const [chartData, setChartData] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [pieData, setPieData] = useState([]);
+    const [pieLabels, setPieLabels] = useState([]);
     const [loading, setLoading] = useState(false)
     const [startRegister, setStartRegister] = useState(null);
     const [endRegister, setEndRegister] = useState(null);
+    const navigate = useNavigate()
+    const [selectedDateRange, setSelectedDateRange] = useState([null, null]) // null for start and end date
+
     const onClick = () => {
         navigate('/FullSchedule')
         setLoading(true)
-
         setTimeout(() => {
             setLoading(false)
         }, 3000)
     }
-    const [selectedDateRange, setSelectedDateRange] = useState([null, null]) // null for start and end date
 
     const handleDateChange = (dates) => {
         setSelectedDateRange(dates)
+        
     }
 
     const formatDate = (date) => {
         const year = date.getFullYear()
         const month = String(date.getMonth() + 1).padStart(2, '0') // JS months are 0-based
         const day = String(date.getDate()).padStart(2, '0')
-
         return `${year}/${month}/${day}`
     }
+
     useEffect(() => {
         const token = sessionStorage.getItem('token')
         const decodedToken = jwt(token)
@@ -45,36 +53,52 @@ const GenrateSchedule = () => {
         fetch(`/api/suggestedStudentSchedule/${departmentId}/statistics`)
             .then((response) => response.json())
             .then((data) => {
-                // Create a new array to hold your chart data
                 let chartData = [
-                    { name: 'All days', data: [] },
-                    { name: 'Sun  , teu , thr', data: [] },
-                    { name: 'mon , wed', data: [] }
+                    
+                    { name: 'Sun, Tue, Thu', data: [], color: COLORS[0] },
+                    { name: 'Mon, Wed', data: [], color: COLORS[1] },
+                    { name: 'Sun, Tue, Thu, Mon, Wed', data: [], color: COLORS[2] }
                 ];
-
-                // Create a new array to hold your categories (course names)
+    
                 let categories = [];
-
-                // Populate the chartData and categories arrays with data from the API
-          data.forEach((item) => {
-    categories.push(item.course.name); // Adds the course name to the categories array
-    for (let key in item.scheduleStatistics) {
-        if (key === "Monday - Wednesday") {
-            chartData[2].data.push(item.scheduleStatistics[key].student_count);
-        } else if (key === "Sunday - Tuesday - Thursday") {
-            chartData[1].data.push(item.scheduleStatistics[key].student_count);
-        } else {
-            chartData[0].data.push(item.scheduleStatistics[key].student_count);
-        }
-    }
-});
-
-                // Update the state with the new chart data and categories
+                let pieData = [];
+                let pieLabels = [];
+                let pieColors = [];
+    
+                data.forEach((item, index) => {
+                    categories.push(item.course.name); 
+                    pieLabels.push(item.course.name);
+                    
+               
+                    let sunTueThuData = item.scheduleStatistics["Sunday - Tuesday - Thursday"]
+                      ? item.scheduleStatistics["Sunday - Tuesday - Thursday"].student_count
+                      : 0;
+                    let monWedData = item.scheduleStatistics["Monday - Wednesday"]
+                      ? item.scheduleStatistics["Monday - Wednesday"].student_count
+                      : 0;
+                    let combinedData = item.scheduleStatistics["Sunday - Tuesday - Thursday, Monday - Wednesday"]
+                      ? item.scheduleStatistics["Sunday - Tuesday - Thursday, Monday - Wednesday"].student_count
+                      : 0;
+    
+                    let totalData =  sunTueThuData + monWedData + combinedData;
+                    pieData.push(totalData);
+                    pieColors.push(COLORS[index % COLORS.length]);  // associate each course with a color
+    
+                    chartData[0].data.push(sunTueThuData);
+                    chartData[1].data.push(monWedData);
+                    chartData[2].data.push(combinedData);
+                });
+    
                 setChartData(chartData);
                 setCategories(categories);
+                setPieData(pieData);
+                setPieLabels(pieLabels);
+                setPieColors(pieColors);  // save the colors for the pie chart
             })
             .catch((error) => console.error(error));
     }, []);
+    
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -93,6 +117,7 @@ const GenrateSchedule = () => {
 
         fetchData();
     }, []);
+
     const onClick1 = () => {
         navigate('/DateTimePicker')
         setLoading(true)
@@ -101,33 +126,7 @@ const GenrateSchedule = () => {
             setLoading(false)
         }, 3000)
     }
-    const navigate = useNavigate()
 
-    const data = [
-        {
-            name: 'All days',
-            data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
-        },
-        {
-            name: 'Sun  , teu , thr',
-            data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
-        },
-        {
-            name: 'mon , wed',
-            data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
-        },
-    ]
-    const data1 = [
-        {
-            data: [44, 55, 57, 56, 61, 58, 63, 60, 66],
-        },
-        {
-            data: [76, 85, 101, 98, 87, 105, 91, 114, 94],
-        },
-        {
-            data: [35, 41, 36, 26, 45, 48, 52, 53, 41],
-        },
-    ]
     const [dialogIsOpen, setIsOpen] = useState(false)
 
     const openDialog = () => {
@@ -155,8 +154,6 @@ const GenrateSchedule = () => {
                     endRegister: formattedEndDate,
                     department_id: departmentId,
                 }
-                console.log(requestData)
-                console.log(selectedDateTime)
                 const response = await fetch('/api/date', {
                     method: 'PUT',
                     headers: {
@@ -164,9 +161,8 @@ const GenrateSchedule = () => {
                     },
                     body: JSON.stringify(requestData),
                 })
-
-                // Rest of the code...
             }
+            window.location.reload();
         } catch (error) {
             console.error('Error:', error)
         } finally {
@@ -178,7 +174,7 @@ const GenrateSchedule = () => {
     return (
         <div>
             <div className="flex-wrap inline-flex xl:flex items-center gap-2">
-                <Dialog isOpen={dialogIsOpen} closable={false}>
+            <Dialog isOpen={dialogIsOpen} closable={false}>
                     <h5 className="mb-4">Start Registration</h5>
 
                     <DatePickerRange
@@ -217,67 +213,54 @@ const GenrateSchedule = () => {
                     icon={<HiOutlineInboxIn />}
                 >
                     <span>Open registration</span>
-
                 </Button>
-           
                 {startRegister && <span>Start Date: {startRegister} </span>}
                 {endRegister && <span>End Date: {endRegister}</span>}
             </div>
-           <Chart
-            options={{
-                plotOptions: {
-                    bar: {
-                        horizontal: false,
-                        columnWidth: '50%',
-                        endingShape: 'rounded',
-                    },
-                },
-                colors: COLORS,
-                dataLabels: {
-                    enabled: false,
-                },
-                stroke: {
-                    show: true,
-                    width: 2,
-                    colors: ['transparent'],
-                },
-                xaxis: {
-                    categories: categories,
-                    labels: {
-                        style: {
-                            colors: [], // Array of colors for the labels
-                            fontSize: '10px',
-                            fontFamily: 'Arial, sans-serif',
-                            width: '50px',
-                            writingMode: 'inherit',
-                            textOrientation: 'mixed',
-                        },
-                    },
-                },
-                fill: {
-                    opacity: 1,
-                },
-                 tooltip: {
-                        y: {
-                            formatter: (val) => `${val} `,
-                        },
-                    },
-            }}
-            series={chartData}
-            height={300}
-            type="bar"
-        />
-
             <Chart
                 options={{
-                    colors: COLORS,
-                    labels: [
-                        'Software Design  ',
-                        'Software Testing',
-                        'Client Server',
-                        'OOP',
-                        'Documention',
-                    ],
+                    plotOptions: {
+                        bar: {
+                            horizontal: false,
+                            columnWidth: '50%',
+                            endingShape: 'rounded',
+                        },
+                    },
+                    dataLabels: {
+                        enabled: false,
+                    },
+                    stroke: {
+                        show: true,
+                        width: 2,
+                        colors: ['transparent'],
+                    },
+                    xaxis: {
+                        categories: categories,
+                        labels: {
+                            style: {
+                                fontSize: '9.2px',
+                            },
+                        },
+                    },
+                    yaxis: {
+                        title: {
+                            text: 'Total students',
+                        },
+                    },
+                    fill: {
+                        opacity: 1,
+                        colors: COLORS
+                    },
+                }}
+                series={chartData}
+                height={400}
+                type="bar"
+            />
+            <Chart
+                options={{
+                 
+                    colors: pieColors,
+                    labels: pieLabels,
                     responsive: [
                         {
                             breakpoint: 480,
@@ -292,7 +275,7 @@ const GenrateSchedule = () => {
                         },
                     ],
                 }}
-                series={[44, 55, 13, 43, 22]}
+                series={pieData}
                 height={300}
                 type="pie"
             />
@@ -301,3 +284,5 @@ const GenrateSchedule = () => {
 }
 
 export default GenrateSchedule
+
+

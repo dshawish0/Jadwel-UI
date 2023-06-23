@@ -15,18 +15,19 @@ const ManageColleges = () => {
   const [newCollegeName, setNewCollegeName] = useState('');
   const [newCollegeId, setNewCollegeId] = useState('');
   const [id, setid] = useState(null);
-    const openDialog = (props) => {
-    setDialogItemId(props.row.original.id);
-    setDialogIsOpen(true);
-  };
-  
 
-  const openEditDialog = (props) => {
-    setDialogItemId(props.row.original.id);
-    setEditedCollegeName(props.row.original.name);
-    setEditedCollegeId(props.row.original.collageId);
-    setEditDialogIsOpen(true);
-  };
+
+  const openDialog = (props) => {
+  setDialogItemId(props.row.original.collageId);
+  setDialogIsOpen(true);
+};
+
+const openEditDialog = (props) => {
+  setDialogItemId(props.row.original.collageId);
+  setEditedCollegeName(props.row.original.name);
+  setEditedCollegeId(props.row.original.collageId);
+  setEditDialogIsOpen(true);
+};
 
   const closeDialogs = () => {
     setDialogIsOpen(false);
@@ -41,8 +42,8 @@ const ManageColleges = () => {
       const response = await fetch(`/api/collages/${dialogItemId}`, {
         method: 'DELETE',
       });
-  
-     
+      
+      // window.location.reload(); // Reload the page after closing the dialog     
     } catch (error) {
     }
     
@@ -63,7 +64,10 @@ const ManageColleges = () => {
           name: editedCollegeName,
           collageId: editedCollegeId,
         }),
-      });
+        
+      }
+      
+      );
       
       if (response.ok) {
      
@@ -84,6 +88,7 @@ const ManageColleges = () => {
         console.error('Error updating college:', response.statusText);
         popNotification('Failed to update');
       }
+      window.location.reload(); // Reload the page after closing the dialog    
     } catch (error) {
       console.error('Error updating college:', error);
       popNotification('Failed to update');
@@ -239,11 +244,7 @@ const ManageColleges = () => {
             value={editedCollegeName}
             onChange={(e) => setEditedCollegeName(e.target.value)}
           />
-          <Input
-            label="College ID"
-            value={editedCollegeId}
-            onChange={(e) => setEditedCollegeId(e.target.value)}
-          />
+          
           <div className="text-right mt-6">
             <Button className="ltr:mr-2 rtl:ml-2" variant="plain" onClick={closeDialogs}>
               Cancel
@@ -262,12 +263,7 @@ const ManageColleges = () => {
             onChange={(e) => setNewCollegeName(e.target.value)}
             placeholder="College name"
           />
-          <Input
-            label="College ID"
-            value={newCollegeId}
-            onChange={(e) => setNewCollegeId(e.target.value)}
-            placeholder="College ID"
-          />
+          
           <div className="text-right mt-6">
             <Button className="ltr:mr-2 rtl:ml-2" variant="plain" onClick={closeDialogs}>
               Cancel

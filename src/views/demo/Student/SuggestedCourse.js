@@ -18,7 +18,7 @@ const SuggestedCourse = () => {
   const [submitError, setSubmitError] = useState(null);
   const [dataSent, setDataSent] = useState(false);
   const [registrationDate, setRegistrationDate] = useState(null);
-  const [isRegistrationActive, setIsRegistrationActive] = useState(false);
+  const [isRegistrationActive, setIsRegistrationActive] = useState(undefined); 
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
 
@@ -53,6 +53,7 @@ const SuggestedCourse = () => {
         );
       } catch (error) {
         console.error('Error fetching registration date:', error);
+        setIsRegistrationActive(false); // set to false if error occurs
       }
     };
 
@@ -103,6 +104,10 @@ const SuggestedCourse = () => {
 
   if (isLoading) {
     return <div>Loading...</div>;
+  }
+
+  if (isRegistrationActive === undefined) {
+    return null;  // or replace with a loading spinner
   }
 
   if (!isRegistrationActive) {
