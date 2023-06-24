@@ -207,9 +207,17 @@ const ManageDepartment = () => {
     
 
     useEffect(() => {
-        fetchColleges()
-        fetchDepartments()
-    }, [])
+        fetchColleges();
+        fetchDepartments();
+    
+        // Check session storage and update the states if necessary
+        const collegeId = sessionStorage.getItem('UpdateCollageId');
+        if (collegeId) {
+            const collegeOption = collegeOptions.find(college => college.value === collegeId);
+            setNewCollege(collegeOption);
+            setEditedCollege(collegeOption);
+        }
+    }, []);
 
     return (
         <>
@@ -287,6 +295,7 @@ const ManageDepartment = () => {
                     <h5 className="mb-4">Add New Department</h5>
                     <p>Add new department information below:</p>
                     <Input
+                    placeholder="Enter Department Name"
                         label="Department Name"
                         value={newDepartmentName}
                         onChange={(e) => setNewDepartmentName(e.target.value)}
@@ -297,7 +306,8 @@ const ManageDepartment = () => {
                         onChange={(val) => {
                             console.log("collage_id" + " " + val.value)
                             sessionStorage.setItem('UpdateCollageId', val.value);
-                            setNewCollege(val.value) // You may need to update this line
+                            setNewCollege(val) // updated
+
                         }}
                     />
 

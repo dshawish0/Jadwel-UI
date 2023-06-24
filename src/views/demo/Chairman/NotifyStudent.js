@@ -77,6 +77,7 @@ const NotifyStudent = () => {
             <FormContainer>
               <FormItem label="Title:">
                 <input
+                placeholder='Enter your message'
                   type="text"
                   name="title"
                   value={values.title}

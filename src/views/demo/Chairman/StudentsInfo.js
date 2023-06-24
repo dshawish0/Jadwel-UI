@@ -13,7 +13,10 @@ const StudentsInfo = ({ stats }) => {
       setStudents(stats.student_full_names.split(','));
     }
     if (stats.student_ids) {
-      setIds(stats.student_ids.split(','));
+      // setIds(stats.student_ids.split(','));
+      var ids = stats.student_ids.split(',');
+      ids.reverse();
+      setIds(ids);
     }
   }, [stats]);
 
@@ -25,27 +28,29 @@ const StudentsInfo = ({ stats }) => {
   };
 
   return (
-    <Table style={{ width: '100%', height: '300%' }}>
-      <THead>
-        <Tr>
-          <Th>Student Name</Th>
-          {/* <Th>Id</Th> */}
-          <Th>schedules</Th>
-        </Tr>
-      </THead>
-      <TBody>
-        {students.map((name, index) => (
-          <Tr key={index}>
-            <Td>{name.trim()}</Td>
-            <Td>
-
-              <button onClick={() => navigateToAnotherPage(ids[index].trim())}>View</button>
-            </Td>
+    <div style={{ height: '500px', overflowY: 'scroll' }}>
+      <Table style={{ width: '100%' }}>
+        <THead>
+          <Tr>
+            <Th>Student Name</Th>
+            {/* <Th>Id</Th> */}
+            <Th>schedules</Th>
           </Tr>
-        ))}
-      </TBody>
-    </Table>
+        </THead>
+        <TBody>
+          {students.map((name, index) => (
+            <Tr key={index}>
+              <Td>{name.trim()}</Td>
+              <Td>
+                <button onClick={() => navigateToAnotherPage(ids[index].trim())}>View</button>
+              </Td>
+            </Tr>
+          ))}
+        </TBody>
+      </Table>
+    </div>
   );
+  
 };
 
 export default StudentsInfo;

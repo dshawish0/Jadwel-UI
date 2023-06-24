@@ -7,22 +7,15 @@ import { HiOutlineLockClosed } from 'react-icons/hi';
 
 const quickStartList = [
   {
-    label: 'Watch quick demonstration video that describes Jadwel!',
-    btnText: 'Watch',
-    id: '0',
-    disabled: false,
-    navigate: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
-  },
-  {
     label: 'Create your first Schedule!',
     desc: 'Building your own schedule the way that fits your needs',
-    id: '1',
+    id: '0',
     disabled: false,
   },
   {
     label: 'Trace the changes that occur on schedules',
     desc: 'Any changes that occur from chairman or admins, you will be notified',
-    id: '2',
+    id: '1',
     disabled: false,
     navigate: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
   },
@@ -72,19 +65,7 @@ const QuickStartItem = (props) => {
             <p>{desc}</p>
           </div>
         </div>
-        {index === 0 ? (
-          <Button
-            disabled={!available}
-            variant="solid"
-            className="mt-4 md:mt-0"
-            size="sm"
-            onClick={handleClick}
-          >
-            {btnText}
-          </Button>
-        ) : (
-          <span className="text-sm">{btnText}</span>
-        )}
+       
       </div>
     </Card>
   );
@@ -113,7 +94,6 @@ const QuickStart = () => {
             borderTheme={borderTheme}
             key={item.id}
             title={item.label}
-            btnText={item.btnText}
             desc={item.desc}
             available={completion.some(
               (c) => c.value === item.id && (c.completed || c.current)

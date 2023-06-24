@@ -104,7 +104,7 @@ const FullSchedule = () => {
                 pagingData={{
                     total: data.length,
                     pageIndex: 1,
-                    pageSize: 10,
+                    pageSize: 100,
                 }}
             />
 

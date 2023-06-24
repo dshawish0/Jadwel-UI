@@ -110,7 +110,7 @@ const MangeDepartmentCourses = () => {
       console.log(courseobj)
       console.log(newCourseName)
       console.log(newCreditHours)
-    
+      setLoading(true) // start loading before API call
 
       try {
         const response = await fetch(`/api/courses/${courseobj.course_id}`, {
@@ -124,19 +124,21 @@ const MangeDepartmentCourses = () => {
             }),
         })
         if (response.ok) {
-            const newCourse = await response.json()
-            setCourses([...courses, newCourse])
-            toast.success('Course added successfully!')
+            const updatedCourse = await response.json()
+            setCourses(courses.map(course => course.course_id === updatedCourse.course_id ? updatedCourse : course))
+            toast.success('Course updated successfully!')
+            closeUpdateDialog() // Close the dialog after successful update
         } else {
-            toast.error('Error adding course')
+            toast.error('Error updating course')
         }
-    } catch (error) {
-        toast.error('Error adding course')
-    } finally {
-        setLoading(false)
-        setAddDialogOpen(false)
+      } catch (error) {
+        toast.error('Error updating course')
+      } finally {
+        setLoading(false) // stop loading after API call
+    closeUpdateDialog() // Close the dialog
+      }
     }
-    }
+    
 
     useEffect(() => {
         fetchColleges()

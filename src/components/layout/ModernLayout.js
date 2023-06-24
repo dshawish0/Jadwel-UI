@@ -6,13 +6,14 @@ import SideNavToggle from 'components/template/SideNavToggle'
 import MobileNav from 'components/template/MobileNav'
 import SideNav from 'components/template/SideNav'
 import View from 'views'
+import jwt from 'jwt-decode'
+
 import Notification from 'components/template/Notification'
 import HeaderLogo from 'components/template/HeaderLogo'
 import { Link } from 'react-router-dom'
 const HeaderActionsStart = () => {
     return (
         <>
-      
             <MobileNav />
             <SideNavToggle />
         </>
@@ -20,14 +21,18 @@ const HeaderActionsStart = () => {
 }
 
 const HeaderActionsEnd = () => {
+    const token = sessionStorage.getItem('token')
+    const decodedToken = jwt(token)
+    const departmentId = decodedToken.departmentId
+   
     return (
         <>
-        
-           <Notification/>
+            {departmentId !== -1 && <Notification />}
             <UserDropdown hoverable={false} />
         </>
-    )
+    );
 }
+
 
 const ModernLayout = (props) => {
     return (

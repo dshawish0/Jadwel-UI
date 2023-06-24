@@ -254,13 +254,13 @@ const DataTable = forwardRef((props, ref) => {
                 )}
             </Table>
             <div className="flex items-center justify-between mt-4">
-                <Pagination
-                    pageSize={pageSize}
-                    currentPage={pageIndex}
-                    total={total}
-                    onChange={handlePaginationChange}
-                />
-                <div style={{ minWidth: 130 }}>
+            <Pagination
+        pageSize={pageSize}
+        currentPage={pageIndex}
+        total={total}
+        onChange={handlePaginationChange}
+    />
+                {/* <div style={{ minWidth: 130 }}>
                     <Select
                         size="sm"
                         menuPlacement="top"
@@ -271,7 +271,7 @@ const DataTable = forwardRef((props, ref) => {
                         options={pageSizeOption}
                         onChange={(option) => handleSelectChange(option.value)}
                     />
-                </div>
+                </div> */}
             </div>
         </Loading>
     )
@@ -298,16 +298,17 @@ DataTable.propTypes = {
 }
 
 DataTable.defaultProps = {
-    pageSizes: [10, 25, 50, 100],
+    pageSizes: [25],
     pagingData: {
         total: 0,
         pageIndex: 1,
-        pageSize: 10,
+        pageSize: 25,
     },
     data: [],
     columns: [],
     selectable: false,
     loading: false,
 }
+
 
 export default DataTable

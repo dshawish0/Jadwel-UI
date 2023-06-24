@@ -80,7 +80,7 @@ const NotifyChairman = () => {
                   type="text"
                   name="title"
                   value={values.title}
-
+                 placeholder='Enter your message'
                   onChange={(e) => setFieldValue('title', e.target.value)}
                   style={{
                     width: '100%',
